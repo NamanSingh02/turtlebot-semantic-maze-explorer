@@ -1,0 +1,209 @@
+Progress Report: Task 1
+
+Current Progress
+
+1. Created a dedicated task folder:
+
+Tasks/Task 1
+
+2. Created a task definition file:
+
+Tasks/Task 1/Task 1.txt
+
+This file documents the project objective and expected final evidence for the TurtleBot ROS 2 maze simulation setup.
+
+3. Created a run guide:
+
+Tasks/Task 1/how to run.txt
+
+This file documents the commands needed to launch the project, how often each command should be repeated, and the required environment prerequisites.
+
+4. Reviewed the repository structure.
+
+Important files inspected:
+
+README.md
+docker-compose.yaml
+docker/Dockerfile.gpu
+docker/entrypoint.sh
+tb_worlds/launch/tb_demo_world.launch.py
+tb_worlds/launch/tb_world.launch.py
+.env
+.devcontainer/devcontainer.json
+
+5. Confirmed that the project uses ROS 2 Jazzy, Docker Compose, Gazebo, RViz2, Nav2, and TurtleBot simulation packages.
+
+6. Confirmed that Google Colab is not suitable for this task because the task depends on GUI robotics simulation tools rather than GPU model training.
+
+7. Built the Docker image successfully using:
+
+docker compose build overlay
+
+The build completed successfully and produced:
+
+turtlebot_behavior:overlay
+
+
+Current Technical Status
+
+The Docker build stage is complete.
+
+The first run of the maze world started ROS 2 correctly using:
+
+docker compose up demo-world
+
+The ROS launch process started several expected components, including:
+
+rviz2
+gz sim
+robot_state_publisher
+map_server
+amcl
+controller_server
+planner_server
+bt_navigator
+waypoint_follower
+velocity_smoother
+
+This confirms that the ROS 2 environment and project launch files are mostly working.
+
+
+Bugs and Challenges Faced
+
+1. XQuartz display variable issue
+
+Problem:
+
+Running:
+
+xhost +localhost
+
+failed with:
+
+xhost: unable to open display "host.docker.internal:0"
+
+Cause:
+
+The DISPLAY variable was set to:
+
+host.docker.internal:0
+
+That value is meant for Docker containers to reach the host display. The xhost command runs on the host side and needs to talk directly to XQuartz, so it should use:
+
+:0
+
+Solution:
+
+Use this order:
+
+export DISPLAY=:0
+xhost +localhost
+export DISPLAY=host.docker.internal:0
+
+The first DISPLAY value is for the host-side XQuartz permission command. The second DISPLAY value is for Docker GUI containers.
+
+
+2. Gazebo and RViz2 OpenGL rendering failure
+
+Problem:
+
+The Docker container started, but Gazebo and RViz2 failed with OpenGL errors.
+
+Observed errors included:
+
+Failed to create OpenGL context
+Unable to create a suitable GLXContext
+Failed to create the rendering window
+
+Cause:
+
+ROS 2, Gazebo, and RViz2 were running inside Docker, but their GUI windows needed OpenGL rendering through XQuartz. On macOS, Docker containers do not have direct access to the native graphics stack. XQuartz provides the display bridge, but OpenGL/GLX support through this path can be limited or fragile, especially for Gazebo and RViz2.
+
+This is a graphics/display integration issue, not a ROS build issue.
+
+Evidence:
+
+The ROS launch logs showed that the map server, AMCL, Nav2 lifecycle nodes, and other ROS components started before the GUI rendering failure. That means the environment was built and launched, but the GUI rendering layer failed.
+
+Potential solution:
+
+Retry the launch with software rendering:
+
+LIBGL_ALWAYS_SOFTWARE=1 \
+MESA_GL_VERSION_OVERRIDE=3.3 \
+MESA_GLSL_VERSION_OVERRIDE=330 \
+QT_XCB_GL_INTEGRATION=none \
+docker compose up demo-world
+
+Alternate option:
+
+LIBGL_ALWAYS_INDIRECT=1 \
+QT_XCB_GL_INTEGRATION=none \
+docker compose up demo-world
+
+
+Why These Challenges Happened
+
+1. Docker isolates the Linux ROS environment from the host operating system.
+
+This is useful because ROS and Gazebo are easier to run in Linux than directly on macOS, but it creates extra complexity for GUI applications.
+
+2. XQuartz is required because Gazebo and RViz2 are Linux GUI applications.
+
+Without XQuartz, the containers have no display server to connect to.
+
+3. DISPLAY has two different roles.
+
+For xhost on the host side:
+
+DISPLAY=:0
+
+For Docker containers:
+
+DISPLAY=host.docker.internal:0
+
+Using the Docker display value for xhost causes xhost to fail.
+
+4. Gazebo and RViz2 require OpenGL.
+
+Simple GUI forwarding is not always enough. These tools need a working OpenGL context, and that is the part currently failing through XQuartz.
+
+
+Current Next Steps
+
+1. Retry the launch using the documented display setup:
+
+export DISPLAY=:0
+xhost +localhost
+export DISPLAY=host.docker.internal:0
+
+2. If normal launch fails, use software rendering:
+
+LIBGL_ALWAYS_SOFTWARE=1 \
+MESA_GL_VERSION_OVERRIDE=3.3 \
+MESA_GLSL_VERSION_OVERRIDE=330 \
+QT_XCB_GL_INTEGRATION=none \
+docker compose up demo-world
+
+3. Once Gazebo and RViz2 open successfully, capture screenshots showing:
+
+- docker compose up demo-world running
+- Gazebo displaying the TurtleBot maze world
+- RViz2 displaying the robot/map visualization
+- ros2 node list output
+- ros2 topic list output
+
+4. Save screenshots inside:
+
+Tasks/Task 1
+
+
+Summary
+
+The project files and documentation structure are now organized under Tasks/Task 1.
+
+The Docker image builds successfully.
+
+ROS 2 launch begins correctly.
+
+The remaining blocker is GUI/OpenGL rendering for Gazebo and RViz2 through XQuartz.

@@ -1,0 +1,26 @@
+Task 1: ROS 2 TurtleBot Maze Simulation
+
+Project objective
+Set up a working ROS 2 robotics simulation environment and bring up a TurtleBot robot inside a simulated maze world.
+
+The goal is to demonstrate that the robotics stack is installed correctly, the simulation can run, and the robot can be visualized through the standard ROS tools.
+
+Required work
+1. Set up ROS 2 using the provided TurtleBot simulation repository.
+2. Build and run the Docker-based robotics environment.
+3. Launch the TurtleBot maze simulation.
+4. Confirm that the ROS 2 system is active using command-line tools.
+5. Open and verify the simulation in Gazebo.
+6. Open and verify the robot visualization in RViz2.
+7. Capture evidence that the setup works correctly.
+
+Expected final evidence
+The final output should include screenshots showing:
+
+- ROS 2 command-line tools running successfully.
+- Active ROS 2 nodes and topics.
+- Gazebo displaying the TurtleBot inside the maze environment.
+- RViz2 displaying the robot, map, and related visualization data.
+
+Success criteria
+This task is complete when the TurtleBot simulation runs successfully in the maze environment and the ROS 2/Gazebo/RViz2 setup can be verified through screenshots.

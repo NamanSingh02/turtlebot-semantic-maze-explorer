@@ -1,0 +1,85 @@
+How to Run Task 1
+
+1. Go to the project root.
+Run this in every new terminal used for this project:
+
+cd path/to/turtlebot-semantic-maze-explorer
+
+
+2. Start XQuartz.
+Run this when XQuartz is not already open:
+
+open -a XQuartz
+
+
+3. Allow local XQuartz connections.
+Run these once per XQuartz session. Repeat them after starting a new XQuartz session:
+
+export DISPLAY=:0
+xhost +localhost
+
+
+4. Set the display address for Docker containers.
+Run this in every new terminal window or tab that will start Docker GUI commands such as Gazebo or RViz2:
+
+export DISPLAY=host.docker.internal:0
+
+
+5. Build the Docker image.
+Run this once before the first launch:
+
+docker compose build overlay
+
+Run it again only if the Docker image was deleted, Docker asks for a rebuild, or project dependencies/Docker files changed.
+
+6. Launch the TurtleBot maze simulation.
+Run this every time the maze simulation needs to start:
+
+docker compose up demo-world
+
+Keep this terminal open while the simulation is running.
+
+7. Open a ROS 2 shell.
+In a second terminal, run this every time a separate ROS 2 command-line shell is needed:
+
+cd path/to/turtlebot-semantic-maze-explorer
+export DISPLAY=host.docker.internal:0
+docker compose run --rm overlay bash
+
+
+8. Verify ROS 2.
+Inside the container, run:
+
+ros2 node list
+ros2 topic list
+ros2 service list
+
+
+9. Stop the simulation.
+Press Ctrl+C in the simulation terminal, then run:
+
+docker compose down
+
+
+Environment Prerequisites:
+
+1. Docker Desktop must be installed.
+
+2. Docker Desktop should be running before using docker compose commands.
+
+3. Docker Desktop should have enough resources allocated:
+CPU: at least 4 cores
+Memory: around 5 GB
+Disk: at least 30 GB available
+
+4. Docker host networking should be enabled if required by the environment.
+
+5. XQuartz must be installed for macOS GUI display support.
+
+6. XQuartz should allow local/network client connections.
+
+7. The TurtleBot simulation repository must already be cloned.
+
+8. The terminal should be opened in the project root before running Docker commands.
+
+9. VS Code and the Docker/Dev Containers extensions are optional, but useful for inspecting the project.
