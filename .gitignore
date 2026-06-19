@@ -22,3 +22,5 @@ detector/*.pt
 .beads-archive.zip
 #MacOS files
 ds_store
+
+.codex
