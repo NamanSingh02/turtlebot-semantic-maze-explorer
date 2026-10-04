@@ -3,7 +3,7 @@
 - It notes: Brief context (what was happening and in which scenario?), description (why it was happening), and how I fixed it
 - lessons learnt during solving the task
 
-October 4, 2026 — Assignment preparation
+Assignment preparation
 
 Context: Attempting the required Beads workflow in the local project shell.
 Issue: bd onboard and bd ready --json both fail with command not found. The standard /opt/homebrew/bin, /usr/local/bin, and ~/.local/bin locations checked did not contain bd.

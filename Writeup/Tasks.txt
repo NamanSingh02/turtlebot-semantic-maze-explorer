@@ -5,7 +5,6 @@
 - What are the learning outcomes from this task? (including technologies as well)
 
 Assignment 1: Getting Started with ROS
-Planning date: October 4, 2026
 Assignment: https://aegean.ai/aiml-common/assignments/main/robotics-spring-2026/assignment-1
 
 Purpose and required outcome
