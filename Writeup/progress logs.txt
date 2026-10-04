@@ -1,4 +1,15 @@
 #The purpose of this Document:
 - This document serves as a log of what all I have done, tried, or implemented
 
+October 4, 2026 — Assignment 1 preparation
+
+I reviewed the assignment page and identified the required evidence: ROS CLI screenshots and Gazebo/RViz2 screenshots showing the TurtleBot in the maze. I confirmed that my available EC2 instance runs Ubuntu 24.04 and that SSH works.
+
+I reviewed the repository README, Compose configuration, Dockerfile, entrypoint, maze launch file, ROS bridge configuration, and RViz configuration. I also located the course repository at github.com/pantelis/turtlebot-maze and checked the official Ubuntu, Docker, NVIDIA, and AWS DCV instructions.
+
+I selected a preparation workflow using ROS 2 Jazzy in Docker and an Amazon DCV console desktop. I documented the execution sequence, learning objectives, checkpoints, submission evidence, and shutdown procedure in Tasks.txt.
+
+The repository inspection showed that demo-world sets NVIDIA environment variables without explicitly requesting a GPU. I included a proposed Compose override and separate host/container OpenGL checks in the plan. I have not applied or validated this override on EC2.
+
+No EC2 installation, image build, simulation launch, navigation test, or submission screenshot has been performed during this preparation. The command sequence is a plan based on source inspection and official documentation, not a record of a completed assignment run.
 
