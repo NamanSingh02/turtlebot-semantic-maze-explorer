@@ -1,5 +1,10 @@
 # Agent Instructions
 
+The writeup files need to be maintained continuously. If anything changes, these files must be kept up to date.
+
+Also content should be written in its appropriate writeup file as mentioned in the section "#The purpose of this Document: " of that writeup file
+
+
 This project uses **bd** (beads) for issue tracking. Run `bd onboard` to get started.
 
 ## Quick Reference

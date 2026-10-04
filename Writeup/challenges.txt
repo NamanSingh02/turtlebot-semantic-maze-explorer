@@ -1,0 +1,6 @@
+#The purpose of this Document:
+- This document notes all the challenges/bugs/errors I faced for each task.
+- It notes: Brief context (what was happening and in which scenario?), description (why it was happening), and how I fixed it
+- lessons learnt during solving the task
+
+

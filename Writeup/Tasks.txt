@@ -1,0 +1,6 @@
+#The purpose of this Document:
+- This document notes what needs to be done in each Task. 
+- Why are these tasks important to learn? (practical/industry use/relevance)
+- Does it have any exceptions/challenges/special concepts?
+- What are the learning outcomes from this task? (including technologies as well)
+

@@ -20,3 +20,8 @@ detector/*.pt
 
 # Beads archive (migrated to Jira 2026-04-13)
 .beads-archive.zip
+
+.ds_store
+steps.txt
+
+logs.txt

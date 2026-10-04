@@ -1,0 +1,4 @@
+#The purpose of this Document:
+- This document serves as a log of what all I have done, tried, or implemented
+
+
