@@ -7,7 +7,7 @@ I reviewed the assignment page and identified the required evidence: ROS CLI scr
 
 I reviewed the repository README, Compose configuration, Dockerfile, entrypoint, maze launch file, ROS bridge configuration, and RViz configuration. I also located the course repository at github.com/pantelis/turtlebot-maze and checked the official Ubuntu, Docker, NVIDIA, and AWS DCV instructions.
 
-I selected a preparation workflow using ROS 2 Jazzy in Docker and an Amazon DCV console desktop. I documented the execution sequence, learning objectives, checkpoints, submission evidence, and shutdown procedure in Tasks.txt.
+I selected a preparation workflow using ROS 2 Jazzy in Docker and an Amazon DCV console desktop. I documented the broader assignment requirements and learning outcomes in Tasks.txt. The detailed execution sequence, commands, checkpoints, and shutdown procedure are in logs.txt.
 
 The repository inspection showed that demo-world sets NVIDIA environment variables without explicitly requesting a GPU. I included a proposed Compose override and separate host/container OpenGL checks in the plan. I have not applied or validated this override on EC2.
 

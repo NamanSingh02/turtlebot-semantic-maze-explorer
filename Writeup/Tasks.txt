@@ -1,173 +1,46 @@
 #The purpose of this Document:
-- This document notes what needs to be done in each Task. 
+- This document notes what all needs to be done in each question/assignment.
 - Why are these tasks important to learn? (practical/industry use/relevance)
 - Does it have any exceptions/challenges/special concepts?
 - What are the learning outcomes from this task? (including technologies as well)
 
 Assignment 1: Getting Started with ROS
-Assignment: https://aegean.ai/aiml-common/assignments/main/robotics-spring-2026/assignment-1
+Assignment source: https://aegean.ai/aiml-common/assignments/main/robotics-spring-2026/assignment-1
 
-Purpose and required outcome
+Assignment objective
 
-I plan to set up ROS and bring up a TurtleBot3 in the course maze. The assignment allocates 50 points to ROS setup and 50 points to bringing up the robot in the maze. My submission evidence will include screenshots of ROS CLI commands, Gazebo, and RViz2. The page does not specify an AI-training or navigation-performance benchmark. Navigation will be an additional verification exercise after the required setup works.
+I need to establish a working ROS development environment and bring up a TurtleBot3 or TurtleBot4 in the required simulated maze. The assignment has two graded tasks, each worth 50 points.
 
-Available resources and approach
+Task 1: Setting up ROS — 50 points
 
-My EC2 instance is g4dn.2xlarge, running Ubuntu 24.04, and SSH access already works. I plan to use ROS 2 Jazzy inside Docker and an Amazon DCV console session to view the graphical applications. My laptop will display the remote desktop while EC2 runs the simulation. I will begin with the original maze and TurtleBot3, running only the demo-world service.
+I need to:
+- Set up a working ROS environment on my system.
+- Become familiar with the ROS command-line interface and basic concepts such as nodes and topics.
+- Capture screenshots of ROS CLI commands as evidence of the setup.
 
-Concepts I plan to learn
+Why this matters
+A working ROS environment is the foundation for developing and integrating robot software. Understanding nodes and topics helps me inspect how robot programs communicate and diagnose problems in later assignments.
 
-ROS nodes are running robot programs, topics carry messages, and launch files start related programs. Gazebo simulates the physical world; RViz2 displays ROS data. Nav2 plans and executes navigation. A pose describes position and orientation, and TF connects coordinate frames. Docker packages dependencies; Compose configures and starts containers. GPU access for computation and OpenGL rendering are separate checks.
+Learning outcomes
+I should understand the role of ROS, recognize its basic communication concepts, and use its CLI to inspect a running robotics system.
 
-Execution sequence
+Task 2: Bringing up the TurtleBot in the maze — 50 points
 
-1. Checking the EC2 environment
+I need to:
+- Use the course turtlebot-maze project to bring up a TurtleBot3 or TurtleBot4 in the required maze world.
+- Display the robot and maze in Gazebo and RViz2.
+- Capture screenshots of both applications showing the robot in the maze.
 
-In the SSH terminal, I will run cat /etc/os-release, uname -m, free -h, df -h /, and nvidia-smi. I expect Ubuntu 24.04, x86_64, approximately 32 GiB RAM, and an NVIDIA T4. I plan to keep at least 40 GB free for the desktop and container builds. If storage is insufficient, I will expand the EBS volume and filesystem before building. Instance-store capacity does not automatically increase the root filesystem.
+Why this matters
+Simulation allows me to inspect robot behavior and sensor data before working with physical hardware. Gazebo represents the simulated physical environment, while RViz2 visualizes the information available to ROS.
 
-2. Preparing the NVIDIA driver
+Learning outcomes
+I should understand the difference between simulation and ROS visualization, recognize the robot and its sensor data in the simulated environment, and demonstrate a functioning robotics application.
 
-If nvidia-smi already succeeds, I will keep the installed driver. Otherwise, I will run sudo apt update, sudo apt install -y ubuntu-drivers-common, sudo ubuntu-drivers install, and sudo reboot. After reconnecting, I will verify nvidia-smi before continuing.
+Relevant constraints and concepts
 
-3. Preparing the graphical desktop
+The assignment recommends Docker-based development and the course repository. ROS distributions must match their supported Ubuntu versions when installed natively; my available Ubuntu 24.04 EC2 instance is suitable for a Jazzy-based setup. Remote graphical access is a practical requirement of my EC2 environment so I can view the required applications.
 
-I will install ubuntu-desktop, mesa-utils, xauth, x11-xserver-utils, and nvidia-xconfig using apt. I will select gdm3 if prompted. In /etc/gdm3/custom.conf, I will set WaylandEnable=false under [daemon]. I will configure the headless NVIDIA display with:
+The required submission consists of ROS CLI screenshots and Gazebo/RViz2 screenshots showing the TurtleBot in the maze. The assignment page does not specify AI model training, an exploration algorithm, or a navigation-performance benchmark. Any additional navigation demonstration is optional verification.
 
-sudo nvidia-xconfig --preserve-busid --enable-all-gpus --allow-empty-initial-configuration --virtual=1920x1080
-sudo systemctl set-default graphical.target
-sudo reboot
-
-This creates the X11 desktop needed by the DCV console session. These host-specific steps still need verification on my EC2 machine.
-
-4. Installing and accessing Amazon DCV
-
-I will download https://d1uj6qtbmh3dt5.cloudfront.net/nice-dcv-ubuntu2404-x86_64.tgz into a fresh directory, extract it, and enter the extracted directory. I will install the nice-dcv-server and nice-dcv-web-viewer .deb packages with sudo apt install -y ./nice-dcv-server_*.deb ./nice-dcv-web-viewer_*.deb. Then I will run:
-
-sudo usermod -aG video dcv
-sudo systemctl enable --now dcvserver
-sudo passwd ubuntu
-sudo dcv create-session --type=console --owner=ubuntu robotics
-sudo dcv list-sessions
-
-The EC2 IAM role needs s3:GetObject permission for arn:aws:s3:::dcv-license.REGION/*, using my actual region, and outbound HTTPS access to S3 for DCV licensing. I will add this permission to the existing role, or attach an EC2 role if none exists.
-
-On my laptop, I will keep this tunnel running, substituting my key path and instance IP:
-
-ssh -i "/path/to/key.pem" -N -L 8443:localhost:8443 ubuntu@EC2_PUBLIC_IP
-
-I will open https://localhost:8443 and sign in as ubuntu. The initial DCV certificate is self-signed. Once logged into the desktop, I will run echo "$XDG_SESSION_TYPE", echo "$DISPLAY", and glxinfo -B. I expect x11, a nonempty display, and an NVIDIA renderer. A llvmpipe renderer means software rendering and needs investigation.
-
-5. Installing Docker and GPU container support
-
-Inside the DCV desktop terminal, I will check docker --version and docker compose version. If they are unavailable, I will follow Docker's official Ubuntu apt-repository installation instructions for noble/amd64 and install docker-ce, docker-ce-cli, containerd.io, docker-buildx-plugin, and docker-compose-plugin. I will add my account to the docker group with sudo usermod -aG docker "$USER", then log out and back in. I will verify docker run --rm hello-world.
-
-I will install NVIDIA Container Toolkit through its official signed apt repository, then run:
-
-sudo nvidia-ctk runtime configure --runtime=docker
-sudo systemctl restart docker
-docker run --rm --gpus all ubuntu:24.04 nvidia-smi
-
-The container must report the T4 before I continue. The authoritative installation commands are linked below, including repository key setup.
-
-6. Obtaining a clean course checkout
-
-I will use a separate course checkout for the initial assignment to avoid mixing the setup exercise with later semantic-exploration components:
-
-mkdir -p ~/robotics
-cd ~/robotics
-git clone https://github.com/pantelis/turtlebot-maze.git
-cd turtlebot-maze
-cat .env
-git rev-parse HEAD
-
-I expect ROS_DISTRO=jazzy. I will retain the commit identifier in my experiment notes. The README still includes some original upstream names; my working directory will be turtlebot-maze.
-
-7. Requesting the GPU and connecting the display
-
-For a fresh checkout without an existing override, I will create docker-compose.override.yml with:
-
-services:
-  demo-world:
-    environment:
-      TURTLEBOT_MODEL: "3"
-      NVIDIA_VISIBLE_DEVICES: all
-      NVIDIA_DRIVER_CAPABILITIES: all
-      __GLX_VENDOR_LIBRARY_NAME: nvidia
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: all
-              capabilities: [gpu]
-
-If an override already exists, I will merge these settings. From the desktop terminal I will run xhost +SI:localuser:root. I will check DISPLAY and XAUTHORITY and verify that XAUTHORITY points to an existing authentication file. If the variable is empty, I will check $HOME/.Xauthority before using that path. I will validate the merged configuration with docker compose config --quiet.
-
-8. Building and launching the maze
-
-From the project folder on the EC2 host, I will run:
-
-docker compose build demo-world
-docker compose run --rm --no-deps demo-world glxinfo -B
-docker compose up demo-world
-
-The build must succeed, and the container renderer should identify NVIDIA. I will leave the launch terminal running. In Gazebo, I expect the maze and robot on the floor with simulation playback active. In RViz2, I expect the map, robot model, and laser scan. I will run only one world at a time.
-
-9. Verifying ROS and live data
-
-In a second desktop terminal, I will enter the running container:
-
-cd ~/robotics/turtlebot-maze
-docker compose exec demo-world bash
-source /opt/ros/jazzy/setup.bash
-source /turtlebot_ws/install/setup.bash
-source /overlay_ws/install/setup.bash
-
-Then I will run:
-
-printenv ROS_DISTRO
-ros2 --help
-ros2 pkg prefix tb_worlds
-ros2 node list
-ros2 topic list
-ros2 topic info /scan --verbose
-ros2 topic echo /clock --once
-ros2 topic echo /odom --once --qos-reliability best_effort
-ros2 topic hz /scan
-
-I will repeat the clock echo to confirm that simulated time advances. I will stop the frequency command with Ctrl+C after several seconds. Expected topics include /clock, /odom, /scan, /tf, /tf_static, /map, and /cmd_vel. A nonzero scan rate demonstrates live messages; no particular rate is specified by the rubric.
-
-10. Verifying visualization and optional navigation
-
-In RViz2, I will use map as the fixed frame, /map for the map display, and /scan for the laser display. If localization is misaligned, I will use 2D Pose Estimate at the robot's actual location and heading. This changes the localization estimate, not the Gazebo robot's physical position.
-
-After the required setup works, I will check ros2 action list for /navigate_to_pose. I will use the RViz navigation-goal tool to choose a nearby free-space goal, then verify the planned path, movement in Gazebo, and updated RViz position. This is optional evidence rather than an additional stated grading requirement.
-
-11. Capturing and submitting evidence
-
-I plan to capture readable screenshots of the ROS environment and package, nodes and topics, live sensor data, Gazebo maze with TurtleBot, and RViz map with robot and laser scan. I may include a navigation screenshot. I will use a large terminal font and keep commands and outputs visible together. Screenshots will show my actual run. I will follow the course submission portal's format; the assignment page does not specify a report template or deadline.
-
-12. Managing performance and ending the run
-
-I will use only demo-world, keep desktop resolution near 1920x1080, avoid builds while capturing evidence, and disable unnecessary RViz camera/point-cloud displays if needed. I will inspect nvidia-smi, docker stats, and top. Gazebo's real-time factor is diagnostic, not a stated grading threshold.
-
-After exiting the container, I will run docker compose stop demo-world and xhost -SI:localuser:root. I will save screenshots locally and stop the EC2 instance when finished. EBS storage remains billable, and instance-store data is not a persistent backup. On resuming, I will reconnect using the current IP, check the DCV session, restore display access, and launch demo-world; unchanged images ordinarily do not need rebuilding.
-
-Troubleshooting approach
-
-I will check the failing layer before changing unrelated settings. DCV connection failures require checking the SSH tunnel and dcvserver. Black desktops require checking gdm3/Xorg and the NVIDIA configuration. Container GPU failures require checking the toolkit. Display failures require checking DISPLAY, XAUTHORITY, and xhost. Missing ROS commands require sourcing the container environment. Missing sensor messages require checking playback, bridges, and QoS. Misaligned RViz data requires checking localization and frames. I will inspect docker compose logs --tail=150 demo-world and focus on the earliest relevant error.
-
-Practical relevance and learning outcomes
-
-This exercise establishes a reproducible robotics development environment and teaches me to inspect a distributed robot system through its nodes, topics, frames, and live sensor data. Separating simulation, visualization, transport, and rendering problems is useful for later perception and navigation work. Successful completion means I can explain the setup and demonstrate the required robot world with clear evidence.
-
-Authoritative setup references
-
-Course repository: https://github.com/pantelis/turtlebot-maze
-Ubuntu NVIDIA drivers: https://ubuntu.com/server/docs/how-to/graphics/install-nvidia-drivers/
-DCV desktop prerequisites: https://docs.aws.amazon.com/dcv/latest/adminguide/setting-up-installing-linux-prereq.html
-DCV installation: https://docs.aws.amazon.com/dcv/latest/adminguide/setting-up-installing-linux-server.html
-DCV sessions: https://docs.aws.amazon.com/dcv/latest/adminguide/managing-sessions-start.html
-DCV licensing: https://docs.aws.amazon.com/dcv/latest/adminguide/setting-up-license.html
-Docker Ubuntu installation: https://docs.docker.com/engine/install/ubuntu/
-NVIDIA Container Toolkit: https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html
+The detailed execution procedure and commands belong in logs.txt. Completed work belongs in progress logs.txt, and encountered technical problems belong in challenges.txt.
