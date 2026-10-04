@@ -3,12 +3,7 @@
 - It notes: Brief context (what was happening and in which scenario?), description (why it was happening), and how I fixed it
 - lessons learnt during solving the task
 
-October 4, 2026 — Preparation and documentation
-
-Context: The initial assignment walkthrough was provided in chat after reading AGENTS.md and the writeup purpose statements.
-Issue: The walkthrough was not recorded in the appropriate writeup files, so the project documentation did not reflect the preparation work.
-Correction: I added the planned workflow and learning outcomes to Tasks.txt and recorded only the research actually completed in progress logs.txt. I kept unexecuted EC2 steps distinct from verified results.
-Lesson: The writeups need to be updated as work proceeds, including research and planning, rather than only after implementation.
+October 4, 2026 — Assignment preparation
 
 Context: Attempting the required Beads workflow in the local project shell.
 Issue: bd onboard and bd ready --json both fail with command not found. The standard /opt/homebrew/bin, /usr/local/bin, and ~/.local/bin locations checked did not contain bd.
@@ -18,4 +13,3 @@ Context: Reviewing the simulation's GPU setup before running on EC2.
 Finding: NVIDIA environment variables alone do not demonstrate that the simulation requests or uses the GPU. The inspected demo-world service does not explicitly reserve a GPU.
 Planned resolution: Request the GPU in a Compose override and verify OpenGL using glxinfo -B on both the desktop and inside the simulation container. This remains untested on EC2.
 Lesson: Successful nvidia-smi output verifies driver access but does not prove hardware-accelerated OpenGL rendering.
-
