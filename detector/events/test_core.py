@@ -3,7 +3,9 @@
 import copy
 import math
 from uuid import uuid4
+
 import pytest
+
 from events.core import OdomBuffer, key_for, make_event, transform_matrix, validate
 
 

@@ -1,7 +1,9 @@
 """Writing a validated frame and its detections atomically."""
 
 from datetime import datetime, timedelta, timezone
+
 from psycopg2.extras import Json
+
 from events.core import validate
 
 

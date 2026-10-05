@@ -5,7 +5,6 @@ import math
 import re
 from uuid import UUID, uuid4
 
-
 SCHEMA = "maze.detection.v1"
 ROBOT_PATTERN = re.compile(r"^[A-Za-z0-9_-]+$")
 
