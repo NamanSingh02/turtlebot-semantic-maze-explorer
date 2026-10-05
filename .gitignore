@@ -25,3 +25,7 @@ detector/*.pt
 steps.txt
 
 logs.txt
+
+# Keeping generated perception records and credentials local.
+outputs/part2/
+.env.events

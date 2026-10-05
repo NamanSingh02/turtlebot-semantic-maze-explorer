@@ -1,0 +1,89 @@
+name: semantic-events
+services:
+  events-world:
+    extends:
+      file: docker-compose.yaml
+      service: overlay
+    environment:
+      TURTLEBOT_MODEL: "3"
+      ROS_DOMAIN_ID: ${ROS_DOMAIN_ID:-0}
+      __GLX_VENDOR_LIBRARY_NAME: nvidia
+      GZ_SIM_RESOURCE_PATH: /overlay_ws/install/tb_worlds/share/tb_worlds/models
+    command: ros2 launch tb_worlds tb_demo_world.launch.py world_name:=sim_house_semantic.sdf.xacro use_aruco:=False
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+  events-router:
+    image: eclipse/zenoh:1.10.1
+    command: ["--listen", "tcp/0.0.0.0:7447"]
+    ports:
+      - "127.0.0.1:7447:7447"
+  events-db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: maze
+      POSTGRES_PASSWORD: ${EVENT_DB_PASSWORD:?Set EVENT_DB_PASSWORD}
+      POSTGRES_DB: maze_events
+    volumes:
+      - events-db:/var/lib/postgresql/data
+      - ./db/detection_events.sql:/docker-entrypoint-initdb.d/01-events.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U maze -d maze_events"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+  events-ingest:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.event-worker
+    environment:
+      EVENT_DATABASE_URL: postgresql://maze:${EVENT_DB_PASSWORD}@events-db:5432/maze_events
+    command: ["python", "event_ingest.py", "--connect", "tcp/events-router:7447", "--ready-file", "/tmp/ingest-ready"]
+    healthcheck:
+      test: ["CMD", "python", "-c", "from pathlib import Path; exit(0 if Path('/tmp/ingest-ready').exists() else 1)"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+    volumes:
+      - ./outputs/part2:/data/events
+    depends_on:
+      events-db:
+        condition: service_healthy
+      events-router:
+        condition: service_started
+  events-detector:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.events
+      args:
+        ROS_DISTRO: ${ROS_DISTRO:-jazzy}
+    network_mode: host
+    ipc: host
+    environment:
+      ROS_DOMAIN_ID: ${ROS_DOMAIN_ID:-0}
+      RMW_IMPLEMENTATION: rmw_cyclonedds_cpp
+      NVIDIA_VISIBLE_DEVICES: all
+      NVIDIA_DRIVER_CAPABILITIES: compute,utility
+    command: ["--connect", "tcp/127.0.0.1:7447", "--device", "0", "--max-fps", "5", "--output", "/data/events"]
+    volumes:
+      - ./outputs/part2:/data/events
+      - events-models:/app/weights
+    working_dir: /app/weights
+    entrypoint: ["/ros_entrypoint.sh", "python", "/app/ros_event_detector.py"]
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    depends_on:
+      events-ingest:
+        condition: service_healthy
+volumes:
+  events-db:
+  events-models:

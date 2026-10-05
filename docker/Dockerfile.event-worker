@@ -1,0 +1,7 @@
+FROM python:3.11-slim
+WORKDIR /app
+RUN pip install --no-cache-dir eclipse-zenoh==1.10.1 psycopg2-binary==2.9.13 pytest==8.3.5
+COPY detector/event_ingest.py detector/event_report.py ./
+COPY detector/events ./events
+COPY db/detection_events.sql /db/detection_events.sql
+CMD ["python", "event_ingest.py"]

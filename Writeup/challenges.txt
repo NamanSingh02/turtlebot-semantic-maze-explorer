@@ -70,3 +70,13 @@ Error: The desktop connection failed through the previous SSH tunnel.
 Cause: The tunnel had closed, and the instance's public IP had changed.
 How I fixed it: I checked the current public IP in AWS, re-established the SSH tunnel, and checked dcvserver and the available session before reconnecting through the browser.
 Lesson learnt: I learned to recheck the instance address and tunnel after an EC2 restart instead of reusing the previous connection details.
+
+Part 2: Implementation challenges
+
+1. The local Docker daemon was unavailable
+
+Context: I tried to use Docker while preparing database and runtime verification.
+Error: Docker could not connect to its Unix socket because the daemon was not running. Starting the application did not produce an available daemon during the checks.
+Cause: The local Docker runtime was unavailable, independently of the Compose configuration.
+How I fixed it: I installed PostgreSQL locally and started a separate temporary database for transaction tests. I validated Compose without the daemon. I did not complete a Docker image build or a ROS simulation run.
+Lesson learnt: I learned that checking configuration and testing database behavior could proceed independently of the container runtime, but neither established that the complete simulation worked.

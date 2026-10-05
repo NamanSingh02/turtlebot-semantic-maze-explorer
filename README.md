@@ -959,3 +959,11 @@ Type `/navigate` in Claude Code. The slash command will:
 ### Safety
 
 The `send_action_goal` tool requires manual approval each time it is called. This is an intentional safety gate for robot-commanding operations.
+
+## Part 2: Semantic perception events
+
+The semantic maze adds three low wall-side benches with distinct object sets. A ROS camera detector publishes timestamp-aligned YOLO observations over Zenoh, and an ingest worker stores frames and detections atomically in PostgreSQL. Local disk spools allow idempotent replay after publication failures.
+
+[World assets](world_assets.md) document placement and procedural geometry. [Implementation verification](docs/part2/run_report.md) records tests and runtime limitations. The runtime stack is `compose.events.yaml`; the SQL schema is `db/detection_events.sql`. The full sequential procedure is maintained in the local, ignored `Writeup/logs.txt`.
+
+The existing simulation uses Jazzy and Gazebo Harmonic. Camera visibility, recognition quality and EC2 GPU performance require a live run. Camera screenshots are excluded from the current implementation scope.

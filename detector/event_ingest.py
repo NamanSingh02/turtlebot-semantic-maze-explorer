@@ -49,10 +49,13 @@ def main():
     parser.add_argument("--dsn", default=os.environ.get("EVENT_DATABASE_URL", ""))
     parser.add_argument("--failures", default="/data/events/ingest_failures.jsonl")
     parser.add_argument("--replay", type=Path)
+    parser.add_argument("--ready-file", type=Path)
     args = parser.parse_args()
     if not args.dsn:
         parser.error("Provide EVENT_DATABASE_URL or --dsn")
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
+    if args.ready_file:
+        args.ready_file.unlink(missing_ok=True)
     failures = Path(args.failures)
     failures.parent.mkdir(parents=True, exist_ok=True)
     failure_lock = threading.Lock()
@@ -95,10 +98,16 @@ def main():
         count = 0
         rejected = 0
         with args.replay.open() as file:
-            for line in file:
+            lines = [file.read()] if args.replay.suffix == ".json" else file
+            for line in lines:
                 try:
                     event = json.loads(line)
-                    if store(key_for(event), line):
+                    key = (
+                        f"maze/{event['robot_id']}/{event['run_id']}/runmeta/v1"
+                        if event.get("schema") == "maze.runmeta.v1"
+                        else key_for(event)
+                    )
+                    if store(key, line):
                         count += 1
                     else:
                         rejected += 1
@@ -130,6 +139,8 @@ def main():
         session.declare_subscriber("maze/**/detections/v1/*", receive),
         session.declare_subscriber("maze/**/runmeta/v1", receive),
     ]
+    if args.ready_file:
+        args.ready_file.touch()
     LOG.info("Subscribed; ready for detector startup")
     try:
         while True:
@@ -144,6 +155,8 @@ def main():
         while not pending.empty():
             store(*pending.get_nowait())
     finally:
+        if args.ready_file:
+            args.ready_file.unlink(missing_ok=True)
         session.close()
         if connection is not None:
             connection.close()
