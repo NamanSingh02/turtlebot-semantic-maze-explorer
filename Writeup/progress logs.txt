@@ -12,3 +12,5 @@ I selected a preparation workflow using ROS 2 Jazzy in Docker and an Amazon DCV 
 The repository inspection showed that demo-world sets NVIDIA environment variables without explicitly requesting a GPU. I included a proposed Compose override and separate host/container OpenGL checks in the plan. I have not applied or validated this override on EC2.
 
 No EC2 installation, image build, simulation launch, navigation test, or submission screenshot has been performed during this preparation. The command sequence is a plan based on source inspection and official documentation, not a record of a completed assignment run.
+
+I documented anticipated setup and simulation failures in challenges.txt, including their context, possible causes, diagnostic approach, proposed resolution, verification criteria, and learning points. These scenarios remain untested until I run the assignment on EC2.
