@@ -43,3 +43,30 @@ I plan to use Docker-based development with the upstream repository. ROS distrib
 I will document the working environment with ROS CLI screenshots and Gazebo/RViz2 screenshots showing the TurtleBot in the maze. This part focuses on environment setup and simulation. A navigation demonstration provides additional verification before later perception and exploration work.
 
 The detailed execution procedure and commands belong in logs.txt. Completed work belongs in progress logs.txt, and encountered technical problems belong in challenges.txt.
+
+Part 2: Object detection events and durable storage
+
+Project objective
+
+I plan to extend the maze with recognizable objects and connect robot-camera perception to durable PostgreSQL records through Zenoh.
+
+Subtask 1: Semantic maze assets
+I plan to create three wall-side benches, each holding a different set of three to five COCO-class objects. The benches need to remain visible to the robot camera. I will document bench identifiers, poses, object lists, and two robot-camera views per bench in world_assets.md.
+
+Subtask 2: Detection and synchronized state
+I plan to detect object classes, confidence scores, and bounding boxes while retaining image metadata, image-content hashes, odometry, velocities, and the base-to-camera transform. Robot state must correspond to the image timestamp rather than inference completion time.
+
+Subtask 3: Structured Zenoh events
+I plan to publish versioned detection events with UUID identifiers and a monotonic sequence per run, plus one run-metadata publication. Keys will follow maze/<robot_id>/<run_id>/detections/v1/<event_id> and maze/<robot_id>/<run_id>/runmeta/v1.
+
+Subtask 4: Transactional database ingestion
+I plan to store frames and their detections in the required detection_events and detections tables. Ingestion must validate incoming events, insert each frame and its detections atomically, handle replay without duplication, and log failed writes.
+
+Subtask 5: Reproducibility and verification
+I plan to produce a run report with event counts and a class histogram, test metadata alignment and duplicate handling, and retain real camera evidence. A live simulation run is needed to establish detection performance and camera visibility.
+
+Practical relevance and learning outcomes
+This part connects robot perception, timestamped state estimation, distributed messaging, and reliable storage. I will learn why latest-state sampling can misrepresent an image, how transforms connect sensor frames, and how database constraints support safe event replay.
+
+Compatibility
+The reference specifies ROS 2 Humble; the existing project uses Jazzy and Gazebo Harmonic. The event code will support both ROS distributions, but the existing maze launch targets Jazzy. Strict Humble execution requires a compatible simulation environment and is not established by changing the ROS image tag alone.

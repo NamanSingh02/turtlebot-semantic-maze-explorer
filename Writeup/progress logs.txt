@@ -14,3 +14,9 @@ The repository inspection showed that demo-world sets NVIDIA environment variabl
 No EC2 installation, image build, simulation launch, navigation test, or simulation screenshot has been performed during this preparation. The command sequence is a plan based on source inspection and official documentation, not a record of a completed project run.
 
 I drafted the challenges.txt entries in first-person past tense. The retrospective draft is based on setup scenarios, and no runtime errors or completed fixes have been verified yet.
+
+Part 2: Requirements and implementation preparation
+
+I read all writeup purpose statements and contents before planning this part. The supplied reference URL was inaccessible, so I located the current object-detection event specification. I compared its metadata, key design, schema, bench layout, and report requirements with the existing detector. The existing keyframe envelope and embedding-ingest worker did not implement the required frame-event schema or transactional relational tables. I documented the broader subtasks in Tasks.txt.
+
+I found that the local Docker daemon was unavailable and the bd executable was not installed. EC2 connection information has not yet been supplied. No live robot-camera evidence or simulated detection counts were produced during this review.
