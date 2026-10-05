@@ -1,0 +1,4780 @@
+<?xml version='1.0' encoding='utf-8'?>
+<sdf xmlns:xacro="http://www.ros.org/wiki/xacro" version="1.6">
+  <xacro:arg name="headless" default="false" />
+  <world name="default">
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics">
+    </plugin>
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands">
+    </plugin>
+    <plugin filename="gz-sim-navsat-system" name="gz::sim::systems::NavSat">
+    </plugin>
+    <xacro:unless value="$(arg headless)">
+      <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster">
+    </plugin>
+    </xacro:unless>
+    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+    <plugin filename="gz-sim-imu-system" name="gz::sim::systems::Imu">
+    </plugin>
+    <light name="sun" type="directional">
+      <cast_shadows>0</cast_shadows>
+      <pose>0 0 10 0 -0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <attenuation>
+        <range>1000</range>
+        <constant>0.9</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <direction>-0.5 0.1 -0.9</direction>
+      <spot>
+        <inner_angle>0</inner_angle>
+        <outer_angle>0</outer_angle>
+        <falloff>0</falloff>
+      </spot>
+    </light>
+    <model name="ground_plane">
+      <static>1</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>100 100</size>
+            </plane>
+          </geometry>
+          <surface>
+            <contact>
+              <collide_bitmask>65535</collide_bitmask>
+              <ode />
+            </contact>
+            <friction>
+              <ode>
+                <mu>100</mu>
+                <mu2>50</mu2>
+              </ode>
+              <torsional>
+                <ode />
+              </torsional>
+            </friction>
+            <bounce />
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name="visual">
+          <cast_shadows>0</cast_shadows>
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>100 100</size>
+            </plane>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Grey</name>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+    </model>
+    <gravity>0 0 -9.8</gravity>
+    <magnetic_field>6e-06 2.3e-05 -4.2e-05</magnetic_field>
+    <atmosphere type="adiabatic" />
+    <physics name="3ms" type="ode">
+      <max_step_size>0.003</max_step_size>
+      <real_time_factor>1</real_time_factor>
+    </physics>
+    <scene>
+      <ambient>0.8 0.8 0.8 1</ambient>
+      <background>0.7 0.7 0.7 1</background>
+      <shadows>0</shadows>
+    </scene>
+    <wind />
+    <spherical_coordinates>
+      <surface_model>EARTH_WGS84</surface_model>
+      <latitude_deg>0</latitude_deg>
+      <longitude_deg>0</longitude_deg>
+      <elevation>0</elevation>
+      <heading_deg>0</heading_deg>
+    </spherical_coordinates>
+    <model name="sim_house">
+      <pose>1.48679 1.14707 0 0 -0 0</pose>
+      <link name="Wall_0">
+        <collision name="Wall_0_Collision">
+          <geometry>
+            <box>
+              <size>2.5 0.15 1</size>
+            </box>
+          </geometry>
+          <pose>0 0 0.5 0 -0 0</pose>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="Wall_0_Visual">
+          <pose>0 0 0.5 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>2.5 0.15 1</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Wood</name>
+            </script>
+            <ambient>1 1 1 1</ambient>
+          </material>
+          <meta>
+            <layer>0</layer>
+          </meta>
+        </visual>
+        <pose>-2.70098 -3.18088 0 0 -0 0</pose>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <link name="Wall_1">
+        <collision name="Wall_1_Collision">
+          <geometry>
+            <box>
+              <size>0.75 0.15 1</size>
+            </box>
+          </geometry>
+          <pose>0 0 0.5 0 -0 0</pose>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="Wall_1_Visual">
+          <pose>0 0 0.5 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.75 0.15 1</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Wood</name>
+            </script>
+            <ambient>1 1 1 1</ambient>
+          </material>
+          <meta>
+            <layer>0</layer>
+          </meta>
+        </visual>
+        <pose>-1.52598 -2.88088 0 0 -0 1.5708</pose>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <link name="Wall_10">
+        <collision name="Wall_10_Collision">
+          <geometry>
+            <box>
+              <size>3.5 0.15 1</size>
+            </box>
+          </geometry>
+          <pose>0 0 0.5 0 -0 0</pose>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="Wall_10_Visual">
+          <pose>0 0 0.5 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>3.5 0.15 1</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Wood</name>
+            </script>
+            <ambient>1 1 1 1</ambient>
+          </material>
+          <meta>
+            <layer>0</layer>
+          </meta>
+        </visual>
+        <pose>-2.79863 1.99647 0 0 -0 -2.35619</pose>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <link name="Wall_11">
+        <collision name="Wall_11_Collision">
+          <geometry>
+            <box>
+              <size>4.153 0.15 1</size>
+            </box>
+          </geometry>
+          <pose>0 0 0.5 0 -0 0</pose>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="Wall_11_Visual">
+          <pose>0 0 0.5 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>4.153 0.15 1</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Wood</name>
+            </script>
+            <ambient>1 1 1 1</ambient>
+          </material>
+          <meta>
+            <layer>0</layer>
+          </meta>
+        </visual>
+        <pose>-3.98298 -1.18938 0 0 -0 -1.5708</pose>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <link name="Wall_13">
+        <collision name="Wall_13_Collision">
+          <geometry>
+            <box>
+              <size>0.75 0.15 1</size>
+            </box>
+          </geometry>
+          <pose>0 0 0.5 0 -0 0</pose>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="Wall_13_Visual">
+          <pose>0 0 0.5 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.75 0.15 1</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Wood</name>
+            </script>
+            <ambient>1 1 1 1</ambient>
+          </material>
+          <meta>
+            <layer>0</layer>
+          </meta>
+        </visual>
+        <pose>-3.6653 0.087099 0 0 -0 0</pose>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <link name="Wall_14">
+        <collision name="Wall_14_Collision">
+          <geometry>
+            <box>
+              <size>1.76432 0.15 1</size>
+            </box>
+          </geometry>
+          <pose>0 0 0.5 0 -0 0</pose>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="Wall_14_Visual">
+          <pose>0 0 0.5 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>1.76432 0.15 1</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Wood</name>
+            </script>
+            <ambient>1 1 1 1</ambient>
+          </material>
+          <meta>
+            <layer>0</layer>
+          </meta>
+        </visual>
+        <pose>-3.3653 -0.720058 0 0 -0 -1.5708</pose>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <link name="Wall_15">
+        <collision name="Wall_15_Collision">
+          <geometry>
+            <box>
+              <size>0.75 0.15 1</size>
+            </box>
+          </geometry>
+          <pose>0 0 0.5 0 -0 0</pose>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="Wall_15_Visual">
+          <pose>0 0 0.5 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.75 0.15 1</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Wood</name>
+            </script>
+            <ambient>1 1 1 1</ambient>
+          </material>
+          <meta>
+            <layer>0</layer>
+          </meta>
+        </visual>
+        <pose>-3.6653 -1.5071 0 0 -0 3.14159</pose>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <link name="Wall_17">
+        <collision name="Wall_17_Collision">
+          <geometry>
+            <box>
+              <size>3.25 0.15 1</size>
+            </box>
+          </geometry>
+          <pose>0 0 0.5 0 -0 0</pose>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="Wall_17_Visual">
+          <pose>0 0 0.5 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>3.25 0.15 1</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Wood</name>
+            </script>
+            <ambient>1 1 1 1</ambient>
+          </material>
+          <meta>
+            <layer>0</layer>
+          </meta>
+        </visual>
+        <pose>-0.665001 1.54843 0 0 -0 -1.5708</pose>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <link name="Wall_18">
+        <collision name="Wall_18_Collision">
+          <geometry>
+            <box>
+              <size>1 0.15 1</size>
+            </box>
+          </geometry>
+          <pose>0 0 0.5 0 -0 0</pose>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="Wall_18_Visual">
+          <pose>0 0 0.5 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>1 0.15 1</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Wood</name>
+            </script>
+            <ambient>1 1 1 1</ambient>
+          </material>
+          <meta>
+            <layer>0</layer>
+          </meta>
+        </visual>
+        <pose>-1.09 -0.001568 0 0 -0 3.14159</pose>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <link name="Wall_19">
+        <collision name="Wall_19_Collision">
+          <geometry>
+            <box>
+              <size>0.75 0.15 1</size>
+            </box>
+          </geometry>
+          <pose>0 0 0.5 0 -0 0</pose>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="Wall_19_Visual">
+          <pose>0 0 0.5 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.75 0.15 1</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Wood</name>
+            </script>
+            <ambient>1 1 1 1</ambient>
+          </material>
+          <meta>
+            <layer>0</layer>
+          </meta>
+        </visual>
+        <pose>-1.515 -0.301568 0 0 -0 -1.5708</pose>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <link name="Wall_2">
+        <collision name="Wall_2_Collision">
+          <geometry>
+            <box>
+              <size>1.25 0.15 1</size>
+            </box>
+          </geometry>
+          <pose>0 0 0.5 0 -0 0</pose>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="Wall_2_Visual">
+          <pose>0 0 0.5 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>1.25 0.15 1</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Wood</name>
+            </script>
+            <ambient>1 1 1 1</ambient>
+          </material>
+          <meta>
+            <layer>0</layer>
+          </meta>
+        </visual>
+        <pose>-0.975982 -2.58088 0 0 -0 0</pose>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <link name="Wall_20">
+        <collision name="Wall_20_Collision">
+          <geometry>
+            <box>
+              <size>1 0.15 1</size>
+            </box>
+          </geometry>
+          <pose>0 0 0.5 0 -0 0</pose>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="Wall_20_Visual">
+          <pose>0 0 0.5 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>1 0.15 1</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Wood</name>
+            </script>
+            <ambient>1 1 1 1</ambient>
+          </material>
+          <meta>
+            <layer>0</layer>
+          </meta>
+        </visual>
+        <pose>-1.09 -0.601568 0 0 -0 0</pose>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <link name="Wall_21">
+        <collision name="Wall_21_Collision">
+          <geometry>
+            <box>
+              <size>1 0.15 1</size>
+            </box>
+          </geometry>
+          <pose>0 0 0.5 0 -0 0</pose>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="Wall_21_Visual">
+          <pose>0 0 0.5 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>1 0.15 1</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Wood</name>
+            </script>
+            <ambient>1 1 1 1</ambient>
+          </material>
+          <meta>
+            <layer>0</layer>
+          </meta>
+        </visual>
+        <pose>-0.665001 -1.02657 0 0 -0 -1.5708</pose>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <link name="Wall_22">
+        <collision name="Wall_22_Collision">
+          <geometry>
+            <box>
+              <size>1.25 0.15 1</size>
+            </box>
+          </geometry>
+          <pose>0 0 0.5 0 -0 0</pose>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="Wall_22_Visual">
+          <pose>0 0 0.5 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>1.25 0.15 1</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Wood</name>
+            </script>
+            <ambient>1 1 1 1</ambient>
+          </material>
+          <meta>
+            <layer>0</layer>
+          </meta>
+        </visual>
+        <pose>-0.115001 -1.45157 0 0 -0 0</pose>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <link name="Wall_24">
+        <collision name="Wall_24_Collision">
+          <geometry>
+            <box>
+              <size>0.75 0.15 1</size>
+            </box>
+          </geometry>
+          <pose>0 0 0.5 0 -0 0</pose>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="Wall_24_Visual">
+          <pose>0 0 0.5 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.75 0.15 1</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Wood</name>
+            </script>
+            <ambient>1 1 1 1</ambient>
+          </material>
+          <meta>
+            <layer>0</layer>
+          </meta>
+        </visual>
+        <pose>0.215018 -0.740877 0 0 -0 3.14159</pose>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <link name="Wall_25">
+        <collision name="Wall_25_Collision">
+          <geometry>
+            <box>
+              <size>3.5 0.15 1</size>
+            </box>
+          </geometry>
+          <pose>0 0 0.5 0 -0 0</pose>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="Wall_25_Visual">
+          <pose>0 0 0.5 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>3.5 0.15 1</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Wood</name>
+            </script>
+            <ambient>1 1 1 1</ambient>
+          </material>
+          <meta>
+            <layer>0</layer>
+          </meta>
+        </visual>
+        <pose>-0.084982 0.934123 0 0 -0 1.5708</pose>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <link name="Wall_29">
+        <collision name="Wall_29_Collision">
+          <geometry>
+            <box>
+              <size>1.5 0.15 1</size>
+            </box>
+          </geometry>
+          <pose>0 0 0.5 0 -0 0</pose>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="Wall_29_Visual">
+          <pose>0 0 0.5 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>1.5 0.15 1</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Wood</name>
+            </script>
+            <ambient>1 1 1 1</ambient>
+          </material>
+          <meta>
+            <layer>0</layer>
+          </meta>
+        </visual>
+        <pose>0.992315 -0.26358 0 0 -0 0.785398</pose>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <link name="Wall_3">
+        <collision name="Wall_3_Collision">
+          <geometry>
+            <box>
+              <size>0.75 0.15 1</size>
+            </box>
+          </geometry>
+          <pose>0 0 0.5 0 -0 0</pose>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="Wall_3_Visual">
+          <pose>0 0 0.5 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.75 0.15 1</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Wood</name>
+            </script>
+            <ambient>1 1 1 1</ambient>
+          </material>
+          <meta>
+            <layer>0</layer>
+          </meta>
+        </visual>
+        <pose>-0.425982 -2.88088 0 0 -0 -1.5708</pose>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <link name="Wall_30">
+        <collision name="Wall_30_Collision">
+          <geometry>
+            <box>
+              <size>1.5 0.15 1</size>
+            </box>
+          </geometry>
+          <pose>0 0 0.5 0 -0 0</pose>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="Wall_30_Visual">
+          <pose>0 0 0.5 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>1.5 0.15 1</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Wood</name>
+            </script>
+            <ambient>1 1 1 1</ambient>
+          </material>
+          <meta>
+            <layer>0</layer>
+          </meta>
+        </visual>
+        <pose>2.14461 0.213717 0 0 -0 0</pose>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <link name="Wall_31">
+        <collision name="Wall_31_Collision">
+          <geometry>
+            <box>
+              <size>0.5 0.15 1</size>
+            </box>
+          </geometry>
+          <pose>0 0 0.5 0 -0 0</pose>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="Wall_31_Visual">
+          <pose>0 0 0.5 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.5 0.15 1</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Wood</name>
+            </script>
+            <ambient>1 1 1 1</ambient>
+          </material>
+          <meta>
+            <layer>0</layer>
+          </meta>
+        </visual>
+        <pose>2.81961 0.038717 0 0 -0 -1.5708</pose>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <link name="Wall_32">
+        <collision name="Wall_32_Collision">
+          <geometry>
+            <box>
+              <size>1.25 0.15 1</size>
+            </box>
+          </geometry>
+          <pose>0 0 0.5 0 -0 0</pose>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="Wall_32_Visual">
+          <pose>0 0 0.5 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>1.25 0.15 1</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Wood</name>
+            </script>
+            <ambient>1 1 1 1</ambient>
+          </material>
+          <meta>
+            <layer>0</layer>
+          </meta>
+        </visual>
+        <pose>2.26961 -0.136283 0 0 -0 3.14159</pose>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <link name="Wall_33">
+        <collision name="Wall_33_Collision">
+          <geometry>
+            <box>
+              <size>2 0.15 1</size>
+            </box>
+          </geometry>
+          <pose>0 0 0.5 0 -0 0</pose>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="Wall_33_Visual">
+          <pose>0 0 0.5 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>2 0.15 1</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Wood</name>
+            </script>
+            <ambient>1 1 1 1</ambient>
+          </material>
+          <meta>
+            <layer>0</layer>
+          </meta>
+        </visual>
+        <pose>1.06554 -0.790357 0 0 -0 -2.35619</pose>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <link name="Wall_35">
+        <collision name="Wall_35_Collision">
+          <geometry>
+            <box>
+              <size>0.75 0.15 1</size>
+            </box>
+          </geometry>
+          <pose>0 0 0.5 0 -0 0</pose>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="Wall_35_Visual">
+          <pose>0 0 0.5 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.75 0.15 1</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Wood</name>
+            </script>
+            <ambient>1 1 1 1</ambient>
+          </material>
+          <meta>
+            <layer>0</layer>
+          </meta>
+        </visual>
+        <pose>0.215018 2.60912 0 0 -0 0</pose>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <link name="Wall_36">
+        <collision name="Wall_36_Collision">
+          <geometry>
+            <box>
+              <size>0.75 0.15 1</size>
+            </box>
+          </geometry>
+          <pose>0 0 0.5 0 -0 0</pose>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="Wall_36_Visual">
+          <pose>0 0 0.5 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.75 0.15 1</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Wood</name>
+            </script>
+            <ambient>1 1 1 1</ambient>
+          </material>
+          <meta>
+            <layer>0</layer>
+          </meta>
+        </visual>
+        <pose>0.515018 2.90912 0 0 -0 1.5708</pose>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <link name="Wall_4">
+        <collision name="Wall_4_Collision">
+          <geometry>
+            <box>
+              <size>2.89732 0.15 1</size>
+            </box>
+          </geometry>
+          <pose>0 0 0.5 0 -0 0</pose>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="Wall_4_Visual">
+          <pose>0 0 0.5 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>2.89732 0.15 1</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Wood</name>
+            </script>
+            <ambient>1 1 1 1</ambient>
+          </material>
+          <meta>
+            <layer>0</layer>
+          </meta>
+        </visual>
+        <pose>0.947676 -3.18088 0 0 -0 0</pose>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <link name="Wall_5">
+        <collision name="Wall_5_Collision">
+          <geometry>
+            <box>
+              <size>2.5 0.15 1</size>
+            </box>
+          </geometry>
+          <pose>0 0 0.5 0 -0 0</pose>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="Wall_5_Visual">
+          <pose>0 0 0.5 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>2.5 0.15 1</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Wood</name>
+            </script>
+            <ambient>1 1 1 1</ambient>
+          </material>
+          <meta>
+            <layer>0</layer>
+          </meta>
+        </visual>
+        <pose>3.15218 -2.35003 0 0 -0 0.785398</pose>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <link name="Wall_6">
+        <collision name="Wall_6_Collision">
+          <geometry>
+            <box>
+              <size>4 0.15 1</size>
+            </box>
+          </geometry>
+          <pose>0 0 0.5 0 -0 0</pose>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="Wall_6_Visual">
+          <pose>0 0 0.5 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>4 0.15 1</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Wood</name>
+            </script>
+            <ambient>1 1 1 1</ambient>
+          </material>
+          <meta>
+            <layer>0</layer>
+          </meta>
+        </visual>
+        <pose>3.99824 0.405824 0 0 -0 1.5708</pose>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <link name="Wall_7">
+        <collision name="Wall_7_Collision">
+          <geometry>
+            <box>
+              <size>2.14732 0.15 1</size>
+            </box>
+          </geometry>
+          <pose>0 0 0.5 0 -0 0</pose>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="Wall_7_Visual">
+          <pose>0 0 0.5 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>2.14732 0.15 1</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Wood</name>
+            </script>
+            <ambient>1 1 1 1</ambient>
+          </material>
+          <meta>
+            <layer>0</layer>
+          </meta>
+        </visual>
+        <pose>2.98438 2.33082 0 0 -0 3.14159</pose>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <link name="Wall_8">
+        <collision name="Wall_8_Collision">
+          <geometry>
+            <box>
+              <size>1 0.15 1</size>
+            </box>
+          </geometry>
+          <pose>0 0 0.5 0 -0 0</pose>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="Wall_8_Visual">
+          <pose>0 0 0.5 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>1 0.15 1</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Wood</name>
+            </script>
+            <ambient>1 1 1 1</ambient>
+          </material>
+          <meta>
+            <layer>0</layer>
+          </meta>
+        </visual>
+        <pose>1.98572 2.75582 0 0 -0 1.5708</pose>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <link name="Wall_9">
+        <collision name="Wall_9_Collision">
+          <geometry>
+            <box>
+              <size>3.75 0.15 1</size>
+            </box>
+          </geometry>
+          <pose>0 0 0.5 0 -0 0</pose>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="Wall_9_Visual">
+          <pose>0 0 0.5 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>3.75 0.15 1</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Wood</name>
+            </script>
+            <ambient>1 1 1 1</ambient>
+          </material>
+          <meta>
+            <layer>0</layer>
+          </meta>
+        </visual>
+        <pose>0.185719 3.18082 0 0 -0 3.14159</pose>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <static>1</static>
+    </model>
+    <gui fullscreen="0">
+      <camera name="user_camera">
+        <pose>0.992328 -4.52052 10.8021 0 1.06764 1.5682</pose>
+        <view_controller>orbit</view_controller>
+        <projection_type>perspective</projection_type>
+      </camera>
+    </gui>
+    <model name="bench_south">
+      <static>true</static>
+      <pose>2.434466 -1.77881 0 0 0 0</pose>
+      <link name="body">
+        <visual name="top">
+          <pose>0 0 0.1175 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>1.2 0.36 0.025</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.45 .25 .1 1</ambient>
+            <diffuse>.45 .25 .1 1</diffuse>
+          </material>
+        </visual>
+        <collision name="top">
+          <pose>0 0 0.1175 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>1.2 0.36 0.025</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="leg_0">
+          <pose>-0.52 -0.12 0.0525 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.035 0.035 0.105</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.25 .15 .08 1</ambient>
+            <diffuse>.25 .15 .08 1</diffuse>
+          </material>
+        </visual>
+        <collision name="leg_0">
+          <pose>-0.52 -0.12 0.0525 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.035 0.035 0.105</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="leg_1">
+          <pose>-0.52 0.12 0.0525 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.035 0.035 0.105</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.25 .15 .08 1</ambient>
+            <diffuse>.25 .15 .08 1</diffuse>
+          </material>
+        </visual>
+        <collision name="leg_1">
+          <pose>-0.52 0.12 0.0525 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.035 0.035 0.105</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="leg_2">
+          <pose>0.52 -0.12 0.0525 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.035 0.035 0.105</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.25 .15 .08 1</ambient>
+            <diffuse>.25 .15 .08 1</diffuse>
+          </material>
+        </visual>
+        <collision name="leg_2">
+          <pose>0.52 -0.12 0.0525 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.035 0.035 0.105</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="leg_3">
+          <pose>0.52 0.12 0.0525 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.035 0.035 0.105</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.25 .15 .08 1</ambient>
+            <diffuse>.25 .15 .08 1</diffuse>
+          </material>
+        </visual>
+        <collision name="leg_3">
+          <pose>0.52 0.12 0.0525 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.035 0.035 0.105</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="bench_south_cup">
+      <static>true</static>
+      <pose>2.074466 -1.77881 0.13 0 0 0</pose>
+      <link name="body">
+        <visual name="bottom">
+          <pose>0 0 0.003 0 0 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.035</radius>
+              <length>0.006</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="bottom">
+          <pose>0 0 0.003 0 0 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.035</radius>
+              <length>0.006</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="rim_0">
+          <pose>0.035 0.0 0.0375 0 0 0.0</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_0">
+          <pose>0.035 0.0 0.0375 0 0 0.0</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_1">
+          <pose>0.03380740392011739 0.009058666578588226 0.0375 0 0 0.2617993877991494</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_1">
+          <pose>0.03380740392011739 0.009058666578588226 0.0375 0 0 0.2617993877991494</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_2">
+          <pose>0.030310889132455356 0.017499999999999998 0.0375 0 0 0.5235987755982988</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_2">
+          <pose>0.030310889132455356 0.017499999999999998 0.0375 0 0 0.5235987755982988</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_3">
+          <pose>0.024748737341529166 0.024748737341529162 0.0375 0 0 0.7853981633974483</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_3">
+          <pose>0.024748737341529166 0.024748737341529162 0.0375 0 0 0.7853981633974483</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_4">
+          <pose>0.017500000000000005 0.030310889132455353 0.0375 0 0 1.0471975511965976</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_4">
+          <pose>0.017500000000000005 0.030310889132455353 0.0375 0 0 1.0471975511965976</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_5">
+          <pose>0.009058666578588226 0.03380740392011739 0.0375 0 0 1.3089969389957472</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_5">
+          <pose>0.009058666578588226 0.03380740392011739 0.0375 0 0 1.3089969389957472</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_6">
+          <pose>2.1431318985078684e-18 0.035 0.0375 0 0 1.5707963267948966</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_6">
+          <pose>2.1431318985078684e-18 0.035 0.0375 0 0 1.5707963267948966</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_7">
+          <pose>-0.009058666578588222 0.03380740392011739 0.0375 0 0 1.832595714594046</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_7">
+          <pose>-0.009058666578588222 0.03380740392011739 0.0375 0 0 1.832595714594046</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_8">
+          <pose>-0.017499999999999995 0.030310889132455356 0.0375 0 0 2.0943951023931953</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_8">
+          <pose>-0.017499999999999995 0.030310889132455356 0.0375 0 0 2.0943951023931953</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_9">
+          <pose>-0.024748737341529162 0.024748737341529166 0.0375 0 0 2.356194490192345</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_9">
+          <pose>-0.024748737341529162 0.024748737341529166 0.0375 0 0 2.356194490192345</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_10">
+          <pose>-0.030310889132455356 0.017499999999999998 0.0375 0 0 2.6179938779914944</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_10">
+          <pose>-0.030310889132455356 0.017499999999999998 0.0375 0 0 2.6179938779914944</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_11">
+          <pose>-0.03380740392011739 0.009058666578588236 0.0375 0 0 2.8797932657906435</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_11">
+          <pose>-0.03380740392011739 0.009058666578588236 0.0375 0 0 2.8797932657906435</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_12">
+          <pose>-0.035 4.286263797015737e-18 0.0375 0 0 3.141592653589793</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_12">
+          <pose>-0.035 4.286263797015737e-18 0.0375 0 0 3.141592653589793</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_13">
+          <pose>-0.03380740392011739 -0.00905866657858823 0.0375 0 0 3.4033920413889427</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_13">
+          <pose>-0.03380740392011739 -0.00905866657858823 0.0375 0 0 3.4033920413889427</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_14">
+          <pose>-0.030310889132455363 -0.017499999999999995 0.0375 0 0 3.665191429188092</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_14">
+          <pose>-0.030310889132455363 -0.017499999999999995 0.0375 0 0 3.665191429188092</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_15">
+          <pose>-0.02474873734152918 -0.024748737341529152 0.0375 0 0 3.926990816987241</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_15">
+          <pose>-0.02474873734152918 -0.024748737341529152 0.0375 0 0 3.926990816987241</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_16">
+          <pose>-0.017500000000000016 -0.030310889132455346 0.0375 0 0 4.1887902047863905</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_16">
+          <pose>-0.017500000000000016 -0.030310889132455346 0.0375 0 0 4.1887902047863905</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_17">
+          <pose>-0.009058666578588222 -0.03380740392011739 0.0375 0 0 4.4505895925855405</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_17">
+          <pose>-0.009058666578588222 -0.03380740392011739 0.0375 0 0 4.4505895925855405</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_18">
+          <pose>-6.429395695523605e-18 -0.035 0.0375 0 0 4.71238898038469</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_18">
+          <pose>-6.429395695523605e-18 -0.035 0.0375 0 0 4.71238898038469</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_19">
+          <pose>0.009058666578588212 -0.0338074039201174 0.0375 0 0 4.974188368183839</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_19">
+          <pose>0.009058666578588212 -0.0338074039201174 0.0375 0 0 4.974188368183839</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_20">
+          <pose>0.017500000000000005 -0.030310889132455353 0.0375 0 0 5.235987755982989</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_20">
+          <pose>0.017500000000000005 -0.030310889132455353 0.0375 0 0 5.235987755982989</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_21">
+          <pose>0.02474873734152916 -0.024748737341529173 0.0375 0 0 5.497787143782138</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_21">
+          <pose>0.02474873734152916 -0.024748737341529173 0.0375 0 0 5.497787143782138</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_22">
+          <pose>0.030310889132455346 -0.017500000000000016 0.0375 0 0 5.759586531581287</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_22">
+          <pose>0.030310889132455346 -0.017500000000000016 0.0375 0 0 5.759586531581287</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_23">
+          <pose>0.033807403920117385 -0.009058666578588255 0.0375 0 0 6.021385919380436</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_23">
+          <pose>0.033807403920117385 -0.009058666578588255 0.0375 0 0 6.021385919380436</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="handle_0">
+          <pose>0.047 0 0.06 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.025 0.009 0.009</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="handle_0">
+          <pose>0.047 0 0.06 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.025 0.009 0.009</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="handle_1">
+          <pose>0.059 0 0.04 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.009 0.009 0.04</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="handle_1">
+          <pose>0.059 0 0.04 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.009 0.009 0.04</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="handle_2">
+          <pose>0.047 0 0.02 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.025 0.009 0.009</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="handle_2">
+          <pose>0.047 0 0.02 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.025 0.009 0.009</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="bench_south_bottle">
+      <static>true</static>
+      <pose>2.434466 -1.77881 0.13 0 0 0</pose>
+      <link name="body">
+        <visual name="body">
+          <pose>0 0 0.0475 0 0 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.032</radius>
+              <length>0.095</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>.08 .3 .8 1</ambient>
+            <diffuse>.08 .3 .8 1</diffuse>
+          </material>
+        </visual>
+        <collision name="body">
+          <pose>0 0 0.0475 0 0 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.032</radius>
+              <length>0.095</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="shoulder">
+          <pose>0 0 0.094 0 0 0</pose>
+          <geometry>
+            <sphere>
+              <radius>0.032</radius>
+            </sphere>
+          </geometry>
+          <material>
+            <ambient>.08 .3 .8 1</ambient>
+            <diffuse>.08 .3 .8 1</diffuse>
+          </material>
+        </visual>
+        <collision name="shoulder">
+          <pose>0 0 0.094 0 0 0</pose>
+          <geometry>
+            <sphere>
+              <radius>0.032</radius>
+            </sphere>
+          </geometry>
+        </collision>
+        <visual name="neck">
+          <pose>0 0 0.125 0 0 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.012</radius>
+              <length>0.045</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>.08 .3 .8 1</ambient>
+            <diffuse>.08 .3 .8 1</diffuse>
+          </material>
+        </visual>
+        <collision name="neck">
+          <pose>0 0 0.125 0 0 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.012</radius>
+              <length>0.045</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="cap">
+          <pose>0 0 0.153 0 0 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.014</radius>
+              <length>0.012</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="cap">
+          <pose>0 0 0.153 0 0 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.014</radius>
+              <length>0.012</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="bench_south_book">
+      <static>true</static>
+      <pose>2.794466 -1.77881 0.13 0 0 0</pose>
+      <link name="body">
+        <visual name="pages">
+          <pose>0 0 0.011 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.135 0.09 0.016</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="pages">
+          <pose>0 0 0.011 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.135 0.09 0.016</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="cover_0">
+          <pose>0 0 0.002 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.14 0.095 0.004</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.6 .08 .03 1</ambient>
+            <diffuse>.6 .08 .03 1</diffuse>
+          </material>
+        </visual>
+        <collision name="cover_0">
+          <pose>0 0 0.002 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.14 0.095 0.004</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="cover_1">
+          <pose>0 0 0.021 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.14 0.095 0.004</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.6 .08 .03 1</ambient>
+            <diffuse>.6 .08 .03 1</diffuse>
+          </material>
+        </visual>
+        <collision name="cover_1">
+          <pose>0 0 0.021 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.14 0.095 0.004</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="bench_east">
+      <static>true</static>
+      <pose>5.23003 1.552894 0 0 0 1.5707963267948966</pose>
+      <link name="body">
+        <visual name="top">
+          <pose>0 0 0.1175 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>1.2 0.36 0.025</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.45 .25 .1 1</ambient>
+            <diffuse>.45 .25 .1 1</diffuse>
+          </material>
+        </visual>
+        <collision name="top">
+          <pose>0 0 0.1175 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>1.2 0.36 0.025</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="leg_0">
+          <pose>-0.52 -0.12 0.0525 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.035 0.035 0.105</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.25 .15 .08 1</ambient>
+            <diffuse>.25 .15 .08 1</diffuse>
+          </material>
+        </visual>
+        <collision name="leg_0">
+          <pose>-0.52 -0.12 0.0525 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.035 0.035 0.105</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="leg_1">
+          <pose>-0.52 0.12 0.0525 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.035 0.035 0.105</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.25 .15 .08 1</ambient>
+            <diffuse>.25 .15 .08 1</diffuse>
+          </material>
+        </visual>
+        <collision name="leg_1">
+          <pose>-0.52 0.12 0.0525 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.035 0.035 0.105</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="leg_2">
+          <pose>0.52 -0.12 0.0525 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.035 0.035 0.105</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.25 .15 .08 1</ambient>
+            <diffuse>.25 .15 .08 1</diffuse>
+          </material>
+        </visual>
+        <collision name="leg_2">
+          <pose>0.52 -0.12 0.0525 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.035 0.035 0.105</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="leg_3">
+          <pose>0.52 0.12 0.0525 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.035 0.035 0.105</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.25 .15 .08 1</ambient>
+            <diffuse>.25 .15 .08 1</diffuse>
+          </material>
+        </visual>
+        <collision name="leg_3">
+          <pose>0.52 0.12 0.0525 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.035 0.035 0.105</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="bench_east_bowl">
+      <static>true</static>
+      <pose>5.23003 1.192894 0.13 0 0 1.5707963267948966</pose>
+      <link name="body">
+        <visual name="bottom">
+          <pose>0 0 0.003 0 0 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.055</radius>
+              <length>0.006</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="bottom">
+          <pose>0 0 0.003 0 0 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.055</radius>
+              <length>0.006</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="rim_0">
+          <pose>0.055 0.0 0.0175 0 0 0.0</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_0">
+          <pose>0.055 0.0 0.0175 0 0 0.0</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_1">
+          <pose>0.053125920445898756 0.01423504748063864 0.0175 0 0 0.2617993877991494</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_1">
+          <pose>0.053125920445898756 0.01423504748063864 0.0175 0 0 0.2617993877991494</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_2">
+          <pose>0.047631397208144126 0.027499999999999997 0.0175 0 0 0.5235987755982988</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_2">
+          <pose>0.047631397208144126 0.027499999999999997 0.0175 0 0 0.5235987755982988</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_3">
+          <pose>0.038890872965260115 0.03889087296526011 0.0175 0 0 0.7853981633974483</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_3">
+          <pose>0.038890872965260115 0.03889087296526011 0.0175 0 0 0.7853981633974483</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_4">
+          <pose>0.027500000000000007 0.047631397208144126 0.0175 0 0 1.0471975511965976</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_4">
+          <pose>0.027500000000000007 0.047631397208144126 0.0175 0 0 1.0471975511965976</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_5">
+          <pose>0.01423504748063864 0.053125920445898756 0.0175 0 0 1.3089969389957472</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_5">
+          <pose>0.01423504748063864 0.053125920445898756 0.0175 0 0 1.3089969389957472</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_6">
+          <pose>3.367778697655221e-18 0.055 0.0175 0 0 1.5707963267948966</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_6">
+          <pose>3.367778697655221e-18 0.055 0.0175 0 0 1.5707963267948966</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_7">
+          <pose>-0.014235047480638635 0.053125920445898756 0.0175 0 0 1.832595714594046</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_7">
+          <pose>-0.014235047480638635 0.053125920445898756 0.0175 0 0 1.832595714594046</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_8">
+          <pose>-0.02749999999999999 0.047631397208144126 0.0175 0 0 2.0943951023931953</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_8">
+          <pose>-0.02749999999999999 0.047631397208144126 0.0175 0 0 2.0943951023931953</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_9">
+          <pose>-0.03889087296526011 0.038890872965260115 0.0175 0 0 2.356194490192345</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_9">
+          <pose>-0.03889087296526011 0.038890872965260115 0.0175 0 0 2.356194490192345</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_10">
+          <pose>-0.047631397208144126 0.027499999999999997 0.0175 0 0 2.6179938779914944</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_10">
+          <pose>-0.047631397208144126 0.027499999999999997 0.0175 0 0 2.6179938779914944</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_11">
+          <pose>-0.05312592044589875 0.014235047480638656 0.0175 0 0 2.8797932657906435</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_11">
+          <pose>-0.05312592044589875 0.014235047480638656 0.0175 0 0 2.8797932657906435</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_12">
+          <pose>-0.055 6.735557395310442e-18 0.0175 0 0 3.141592653589793</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_12">
+          <pose>-0.055 6.735557395310442e-18 0.0175 0 0 3.141592653589793</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_13">
+          <pose>-0.053125920445898756 -0.014235047480638644 0.0175 0 0 3.4033920413889427</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_13">
+          <pose>-0.053125920445898756 -0.014235047480638644 0.0175 0 0 3.4033920413889427</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_14">
+          <pose>-0.04763139720814413 -0.027499999999999986 0.0175 0 0 3.665191429188092</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_14">
+          <pose>-0.04763139720814413 -0.027499999999999986 0.0175 0 0 3.665191429188092</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_15">
+          <pose>-0.038890872965260136 -0.038890872965260094 0.0175 0 0 3.926990816987241</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_15">
+          <pose>-0.038890872965260136 -0.038890872965260094 0.0175 0 0 3.926990816987241</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_16">
+          <pose>-0.027500000000000024 -0.04763139720814411 0.0175 0 0 4.1887902047863905</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_16">
+          <pose>-0.027500000000000024 -0.04763139720814411 0.0175 0 0 4.1887902047863905</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_17">
+          <pose>-0.014235047480638635 -0.053125920445898756 0.0175 0 0 4.4505895925855405</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_17">
+          <pose>-0.014235047480638635 -0.053125920445898756 0.0175 0 0 4.4505895925855405</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_18">
+          <pose>-1.0103336092965663e-17 -0.055 0.0175 0 0 4.71238898038469</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_18">
+          <pose>-1.0103336092965663e-17 -0.055 0.0175 0 0 4.71238898038469</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_19">
+          <pose>0.014235047480638616 -0.05312592044589876 0.0175 0 0 4.974188368183839</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_19">
+          <pose>0.014235047480638616 -0.05312592044589876 0.0175 0 0 4.974188368183839</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_20">
+          <pose>0.027500000000000007 -0.047631397208144126 0.0175 0 0 5.235987755982989</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_20">
+          <pose>0.027500000000000007 -0.047631397208144126 0.0175 0 0 5.235987755982989</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_21">
+          <pose>0.03889087296526011 -0.03889087296526012 0.0175 0 0 5.497787143782138</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_21">
+          <pose>0.03889087296526011 -0.03889087296526012 0.0175 0 0 5.497787143782138</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_22">
+          <pose>0.04763139720814411 -0.027500000000000024 0.0175 0 0 5.759586531581287</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_22">
+          <pose>0.04763139720814411 -0.027500000000000024 0.0175 0 0 5.759586531581287</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_23">
+          <pose>0.05312592044589875 -0.014235047480638686 0.0175 0 0 6.021385919380436</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_23">
+          <pose>0.05312592044589875 -0.014235047480638686 0.0175 0 0 6.021385919380436</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="bench_east_laptop">
+      <static>true</static>
+      <pose>5.23003 1.552894 0.13 0 0 1.5707963267948966</pose>
+      <link name="body">
+        <visual name="keyboard">
+          <pose>0 0 0.006 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.19 0.14 0.012</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.15 .15 .16 1</ambient>
+            <diffuse>.15 .15 .16 1</diffuse>
+          </material>
+        </visual>
+        <collision name="keyboard">
+          <pose>0 0 0.006 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.19 0.14 0.012</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="lid">
+          <pose>0 0.058 0.069 -0.2 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.19 0.01 0.13</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.12 .12 .13 1</ambient>
+            <diffuse>.12 .12 .13 1</diffuse>
+          </material>
+        </visual>
+        <collision name="lid">
+          <pose>0 0.058 0.069 -0.2 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.19 0.01 0.13</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="screen">
+          <pose>0 0.049 0.069 -0.2 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.17 0.002 0.11</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.1 .45 .7 1</ambient>
+            <diffuse>.1 .45 .7 1</diffuse>
+          </material>
+        </visual>
+        <collision name="screen">
+          <pose>0 0.049 0.069 -0.2 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.17 0.002 0.11</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="bench_east_mouse">
+      <static>true</static>
+      <pose>5.23003 1.912894 0.13 0 0 1.5707963267948966</pose>
+      <link name="body">
+        <visual name="base">
+          <pose>0 0 0.0125 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.045 0.065 0.025</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.2 .2 .2 1</ambient>
+            <diffuse>.2 .2 .2 1</diffuse>
+          </material>
+        </visual>
+        <collision name="base">
+          <pose>0 0 0.0125 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.045 0.065 0.025</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="wheel">
+          <pose>0 0.013 0.027 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.006 0.013 0.004</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="wheel">
+          <pose>0 0.013 0.027 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.006 0.013 0.004</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="bench_north">
+      <static>true</static>
+      <pose>4.47117 3.22289 0 0 0 0</pose>
+      <link name="body">
+        <visual name="top">
+          <pose>0 0 0.1175 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>1.2 0.36 0.025</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.45 .25 .1 1</ambient>
+            <diffuse>.45 .25 .1 1</diffuse>
+          </material>
+        </visual>
+        <collision name="top">
+          <pose>0 0 0.1175 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>1.2 0.36 0.025</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="leg_0">
+          <pose>-0.52 -0.12 0.0525 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.035 0.035 0.105</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.25 .15 .08 1</ambient>
+            <diffuse>.25 .15 .08 1</diffuse>
+          </material>
+        </visual>
+        <collision name="leg_0">
+          <pose>-0.52 -0.12 0.0525 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.035 0.035 0.105</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="leg_1">
+          <pose>-0.52 0.12 0.0525 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.035 0.035 0.105</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.25 .15 .08 1</ambient>
+            <diffuse>.25 .15 .08 1</diffuse>
+          </material>
+        </visual>
+        <collision name="leg_1">
+          <pose>-0.52 0.12 0.0525 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.035 0.035 0.105</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="leg_2">
+          <pose>0.52 -0.12 0.0525 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.035 0.035 0.105</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.25 .15 .08 1</ambient>
+            <diffuse>.25 .15 .08 1</diffuse>
+          </material>
+        </visual>
+        <collision name="leg_2">
+          <pose>0.52 -0.12 0.0525 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.035 0.035 0.105</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="leg_3">
+          <pose>0.52 0.12 0.0525 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.035 0.035 0.105</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.25 .15 .08 1</ambient>
+            <diffuse>.25 .15 .08 1</diffuse>
+          </material>
+        </visual>
+        <collision name="leg_3">
+          <pose>0.52 0.12 0.0525 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.035 0.035 0.105</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="bench_north_cup">
+      <static>true</static>
+      <pose>4.1111699999999995 3.22289 0.13 0 0 0</pose>
+      <link name="body">
+        <visual name="bottom">
+          <pose>0 0 0.003 0 0 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.035</radius>
+              <length>0.006</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="bottom">
+          <pose>0 0 0.003 0 0 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.035</radius>
+              <length>0.006</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="rim_0">
+          <pose>0.035 0.0 0.0375 0 0 0.0</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_0">
+          <pose>0.035 0.0 0.0375 0 0 0.0</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_1">
+          <pose>0.03380740392011739 0.009058666578588226 0.0375 0 0 0.2617993877991494</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_1">
+          <pose>0.03380740392011739 0.009058666578588226 0.0375 0 0 0.2617993877991494</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_2">
+          <pose>0.030310889132455356 0.017499999999999998 0.0375 0 0 0.5235987755982988</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_2">
+          <pose>0.030310889132455356 0.017499999999999998 0.0375 0 0 0.5235987755982988</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_3">
+          <pose>0.024748737341529166 0.024748737341529162 0.0375 0 0 0.7853981633974483</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_3">
+          <pose>0.024748737341529166 0.024748737341529162 0.0375 0 0 0.7853981633974483</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_4">
+          <pose>0.017500000000000005 0.030310889132455353 0.0375 0 0 1.0471975511965976</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_4">
+          <pose>0.017500000000000005 0.030310889132455353 0.0375 0 0 1.0471975511965976</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_5">
+          <pose>0.009058666578588226 0.03380740392011739 0.0375 0 0 1.3089969389957472</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_5">
+          <pose>0.009058666578588226 0.03380740392011739 0.0375 0 0 1.3089969389957472</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_6">
+          <pose>2.1431318985078684e-18 0.035 0.0375 0 0 1.5707963267948966</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_6">
+          <pose>2.1431318985078684e-18 0.035 0.0375 0 0 1.5707963267948966</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_7">
+          <pose>-0.009058666578588222 0.03380740392011739 0.0375 0 0 1.832595714594046</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_7">
+          <pose>-0.009058666578588222 0.03380740392011739 0.0375 0 0 1.832595714594046</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_8">
+          <pose>-0.017499999999999995 0.030310889132455356 0.0375 0 0 2.0943951023931953</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_8">
+          <pose>-0.017499999999999995 0.030310889132455356 0.0375 0 0 2.0943951023931953</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_9">
+          <pose>-0.024748737341529162 0.024748737341529166 0.0375 0 0 2.356194490192345</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_9">
+          <pose>-0.024748737341529162 0.024748737341529166 0.0375 0 0 2.356194490192345</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_10">
+          <pose>-0.030310889132455356 0.017499999999999998 0.0375 0 0 2.6179938779914944</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_10">
+          <pose>-0.030310889132455356 0.017499999999999998 0.0375 0 0 2.6179938779914944</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_11">
+          <pose>-0.03380740392011739 0.009058666578588236 0.0375 0 0 2.8797932657906435</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_11">
+          <pose>-0.03380740392011739 0.009058666578588236 0.0375 0 0 2.8797932657906435</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_12">
+          <pose>-0.035 4.286263797015737e-18 0.0375 0 0 3.141592653589793</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_12">
+          <pose>-0.035 4.286263797015737e-18 0.0375 0 0 3.141592653589793</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_13">
+          <pose>-0.03380740392011739 -0.00905866657858823 0.0375 0 0 3.4033920413889427</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_13">
+          <pose>-0.03380740392011739 -0.00905866657858823 0.0375 0 0 3.4033920413889427</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_14">
+          <pose>-0.030310889132455363 -0.017499999999999995 0.0375 0 0 3.665191429188092</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_14">
+          <pose>-0.030310889132455363 -0.017499999999999995 0.0375 0 0 3.665191429188092</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_15">
+          <pose>-0.02474873734152918 -0.024748737341529152 0.0375 0 0 3.926990816987241</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_15">
+          <pose>-0.02474873734152918 -0.024748737341529152 0.0375 0 0 3.926990816987241</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_16">
+          <pose>-0.017500000000000016 -0.030310889132455346 0.0375 0 0 4.1887902047863905</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_16">
+          <pose>-0.017500000000000016 -0.030310889132455346 0.0375 0 0 4.1887902047863905</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_17">
+          <pose>-0.009058666578588222 -0.03380740392011739 0.0375 0 0 4.4505895925855405</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_17">
+          <pose>-0.009058666578588222 -0.03380740392011739 0.0375 0 0 4.4505895925855405</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_18">
+          <pose>-6.429395695523605e-18 -0.035 0.0375 0 0 4.71238898038469</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_18">
+          <pose>-6.429395695523605e-18 -0.035 0.0375 0 0 4.71238898038469</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_19">
+          <pose>0.009058666578588212 -0.0338074039201174 0.0375 0 0 4.974188368183839</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_19">
+          <pose>0.009058666578588212 -0.0338074039201174 0.0375 0 0 4.974188368183839</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_20">
+          <pose>0.017500000000000005 -0.030310889132455353 0.0375 0 0 5.235987755982989</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_20">
+          <pose>0.017500000000000005 -0.030310889132455353 0.0375 0 0 5.235987755982989</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_21">
+          <pose>0.02474873734152916 -0.024748737341529173 0.0375 0 0 5.497787143782138</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_21">
+          <pose>0.02474873734152916 -0.024748737341529173 0.0375 0 0 5.497787143782138</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_22">
+          <pose>0.030310889132455346 -0.017500000000000016 0.0375 0 0 5.759586531581287</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_22">
+          <pose>0.030310889132455346 -0.017500000000000016 0.0375 0 0 5.759586531581287</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_23">
+          <pose>0.033807403920117385 -0.009058666578588255 0.0375 0 0 6.021385919380436</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_23">
+          <pose>0.033807403920117385 -0.009058666578588255 0.0375 0 0 6.021385919380436</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.010150000000000001 0.075</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="handle_0">
+          <pose>0.047 0 0.06 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.025 0.009 0.009</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="handle_0">
+          <pose>0.047 0 0.06 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.025 0.009 0.009</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="handle_1">
+          <pose>0.059 0 0.04 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.009 0.009 0.04</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="handle_1">
+          <pose>0.059 0 0.04 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.009 0.009 0.04</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="handle_2">
+          <pose>0.047 0 0.02 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.025 0.009 0.009</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="handle_2">
+          <pose>0.047 0 0.02 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.025 0.009 0.009</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="bench_north_bowl">
+      <static>true</static>
+      <pose>4.47117 3.22289 0.13 0 0 0</pose>
+      <link name="body">
+        <visual name="bottom">
+          <pose>0 0 0.003 0 0 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.055</radius>
+              <length>0.006</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="bottom">
+          <pose>0 0 0.003 0 0 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.055</radius>
+              <length>0.006</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="rim_0">
+          <pose>0.055 0.0 0.0175 0 0 0.0</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_0">
+          <pose>0.055 0.0 0.0175 0 0 0.0</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_1">
+          <pose>0.053125920445898756 0.01423504748063864 0.0175 0 0 0.2617993877991494</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_1">
+          <pose>0.053125920445898756 0.01423504748063864 0.0175 0 0 0.2617993877991494</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_2">
+          <pose>0.047631397208144126 0.027499999999999997 0.0175 0 0 0.5235987755982988</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_2">
+          <pose>0.047631397208144126 0.027499999999999997 0.0175 0 0 0.5235987755982988</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_3">
+          <pose>0.038890872965260115 0.03889087296526011 0.0175 0 0 0.7853981633974483</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_3">
+          <pose>0.038890872965260115 0.03889087296526011 0.0175 0 0 0.7853981633974483</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_4">
+          <pose>0.027500000000000007 0.047631397208144126 0.0175 0 0 1.0471975511965976</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_4">
+          <pose>0.027500000000000007 0.047631397208144126 0.0175 0 0 1.0471975511965976</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_5">
+          <pose>0.01423504748063864 0.053125920445898756 0.0175 0 0 1.3089969389957472</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_5">
+          <pose>0.01423504748063864 0.053125920445898756 0.0175 0 0 1.3089969389957472</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_6">
+          <pose>3.367778697655221e-18 0.055 0.0175 0 0 1.5707963267948966</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_6">
+          <pose>3.367778697655221e-18 0.055 0.0175 0 0 1.5707963267948966</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_7">
+          <pose>-0.014235047480638635 0.053125920445898756 0.0175 0 0 1.832595714594046</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_7">
+          <pose>-0.014235047480638635 0.053125920445898756 0.0175 0 0 1.832595714594046</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_8">
+          <pose>-0.02749999999999999 0.047631397208144126 0.0175 0 0 2.0943951023931953</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_8">
+          <pose>-0.02749999999999999 0.047631397208144126 0.0175 0 0 2.0943951023931953</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_9">
+          <pose>-0.03889087296526011 0.038890872965260115 0.0175 0 0 2.356194490192345</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_9">
+          <pose>-0.03889087296526011 0.038890872965260115 0.0175 0 0 2.356194490192345</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_10">
+          <pose>-0.047631397208144126 0.027499999999999997 0.0175 0 0 2.6179938779914944</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_10">
+          <pose>-0.047631397208144126 0.027499999999999997 0.0175 0 0 2.6179938779914944</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_11">
+          <pose>-0.05312592044589875 0.014235047480638656 0.0175 0 0 2.8797932657906435</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_11">
+          <pose>-0.05312592044589875 0.014235047480638656 0.0175 0 0 2.8797932657906435</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_12">
+          <pose>-0.055 6.735557395310442e-18 0.0175 0 0 3.141592653589793</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_12">
+          <pose>-0.055 6.735557395310442e-18 0.0175 0 0 3.141592653589793</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_13">
+          <pose>-0.053125920445898756 -0.014235047480638644 0.0175 0 0 3.4033920413889427</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_13">
+          <pose>-0.053125920445898756 -0.014235047480638644 0.0175 0 0 3.4033920413889427</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_14">
+          <pose>-0.04763139720814413 -0.027499999999999986 0.0175 0 0 3.665191429188092</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_14">
+          <pose>-0.04763139720814413 -0.027499999999999986 0.0175 0 0 3.665191429188092</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_15">
+          <pose>-0.038890872965260136 -0.038890872965260094 0.0175 0 0 3.926990816987241</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_15">
+          <pose>-0.038890872965260136 -0.038890872965260094 0.0175 0 0 3.926990816987241</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_16">
+          <pose>-0.027500000000000024 -0.04763139720814411 0.0175 0 0 4.1887902047863905</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_16">
+          <pose>-0.027500000000000024 -0.04763139720814411 0.0175 0 0 4.1887902047863905</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_17">
+          <pose>-0.014235047480638635 -0.053125920445898756 0.0175 0 0 4.4505895925855405</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_17">
+          <pose>-0.014235047480638635 -0.053125920445898756 0.0175 0 0 4.4505895925855405</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_18">
+          <pose>-1.0103336092965663e-17 -0.055 0.0175 0 0 4.71238898038469</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_18">
+          <pose>-1.0103336092965663e-17 -0.055 0.0175 0 0 4.71238898038469</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_19">
+          <pose>0.014235047480638616 -0.05312592044589876 0.0175 0 0 4.974188368183839</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_19">
+          <pose>0.014235047480638616 -0.05312592044589876 0.0175 0 0 4.974188368183839</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_20">
+          <pose>0.027500000000000007 -0.047631397208144126 0.0175 0 0 5.235987755982989</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_20">
+          <pose>0.027500000000000007 -0.047631397208144126 0.0175 0 0 5.235987755982989</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_21">
+          <pose>0.03889087296526011 -0.03889087296526012 0.0175 0 0 5.497787143782138</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_21">
+          <pose>0.03889087296526011 -0.03889087296526012 0.0175 0 0 5.497787143782138</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_22">
+          <pose>0.04763139720814411 -0.027500000000000024 0.0175 0 0 5.759586531581287</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_22">
+          <pose>0.04763139720814411 -0.027500000000000024 0.0175 0 0 5.759586531581287</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_23">
+          <pose>0.05312592044589875 -0.014235047480638686 0.0175 0 0 6.021385919380436</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.92 .92 .88 1</ambient>
+            <diffuse>.92 .92 .88 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_23">
+          <pose>0.05312592044589875 -0.014235047480638686 0.0175 0 0 6.021385919380436</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.01595 0.035</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="bench_north_vase">
+      <static>true</static>
+      <pose>4.83117 3.22289 0.13 0 0 0</pose>
+      <link name="body">
+        <visual name="body">
+          <pose>0 0 0.0475 0 0 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.032</radius>
+              <length>0.095</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>.08 .3 .8 1</ambient>
+            <diffuse>.08 .3 .8 1</diffuse>
+          </material>
+        </visual>
+        <collision name="body">
+          <pose>0 0 0.0475 0 0 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.032</radius>
+              <length>0.095</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="shoulder">
+          <pose>0 0 0.094 0 0 0</pose>
+          <geometry>
+            <sphere>
+              <radius>0.032</radius>
+            </sphere>
+          </geometry>
+          <material>
+            <ambient>.08 .3 .8 1</ambient>
+            <diffuse>.08 .3 .8 1</diffuse>
+          </material>
+        </visual>
+        <collision name="shoulder">
+          <pose>0 0 0.094 0 0 0</pose>
+          <geometry>
+            <sphere>
+              <radius>0.032</radius>
+            </sphere>
+          </geometry>
+        </collision>
+        <visual name="neck">
+          <pose>0 0 0.125 0 0 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.012</radius>
+              <length>0.045</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>.08 .3 .8 1</ambient>
+            <diffuse>.08 .3 .8 1</diffuse>
+          </material>
+        </visual>
+        <collision name="neck">
+          <pose>0 0 0.125 0 0 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.012</radius>
+              <length>0.045</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="bottom">
+          <pose>0 0 0.003 0 0 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.02</radius>
+              <length>0.006</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>.08 .3 .8 1</ambient>
+            <diffuse>.08 .3 .8 1</diffuse>
+          </material>
+        </visual>
+        <collision name="bottom">
+          <pose>0 0 0.003 0 0 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.02</radius>
+              <length>0.006</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="rim_0">
+          <pose>0.02 0.0 0.006 0 0 0.0</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.0058 0.012</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.08 .3 .8 1</ambient>
+            <diffuse>.08 .3 .8 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_0">
+          <pose>0.02 0.0 0.006 0 0 0.0</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.0058 0.012</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_1">
+          <pose>0.019318516525781367 0.005176380902050415 0.006 0 0 0.2617993877991494</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.0058 0.012</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.08 .3 .8 1</ambient>
+            <diffuse>.08 .3 .8 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_1">
+          <pose>0.019318516525781367 0.005176380902050415 0.006 0 0 0.2617993877991494</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.0058 0.012</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_2">
+          <pose>0.017320508075688773 0.009999999999999998 0.006 0 0 0.5235987755982988</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.0058 0.012</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.08 .3 .8 1</ambient>
+            <diffuse>.08 .3 .8 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_2">
+          <pose>0.017320508075688773 0.009999999999999998 0.006 0 0 0.5235987755982988</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.0058 0.012</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_3">
+          <pose>0.014142135623730952 0.014142135623730949 0.006 0 0 0.7853981633974483</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.0058 0.012</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.08 .3 .8 1</ambient>
+            <diffuse>.08 .3 .8 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_3">
+          <pose>0.014142135623730952 0.014142135623730949 0.006 0 0 0.7853981633974483</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.0058 0.012</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_4">
+          <pose>0.010000000000000002 0.017320508075688773 0.006 0 0 1.0471975511965976</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.0058 0.012</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.08 .3 .8 1</ambient>
+            <diffuse>.08 .3 .8 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_4">
+          <pose>0.010000000000000002 0.017320508075688773 0.006 0 0 1.0471975511965976</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.0058 0.012</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_5">
+          <pose>0.005176380902050415 0.019318516525781367 0.006 0 0 1.3089969389957472</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.0058 0.012</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.08 .3 .8 1</ambient>
+            <diffuse>.08 .3 .8 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_5">
+          <pose>0.005176380902050415 0.019318516525781367 0.006 0 0 1.3089969389957472</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.0058 0.012</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_6">
+          <pose>1.2246467991473532e-18 0.02 0.006 0 0 1.5707963267948966</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.0058 0.012</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.08 .3 .8 1</ambient>
+            <diffuse>.08 .3 .8 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_6">
+          <pose>1.2246467991473532e-18 0.02 0.006 0 0 1.5707963267948966</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.0058 0.012</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_7">
+          <pose>-0.005176380902050413 0.019318516525781367 0.006 0 0 1.832595714594046</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.0058 0.012</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.08 .3 .8 1</ambient>
+            <diffuse>.08 .3 .8 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_7">
+          <pose>-0.005176380902050413 0.019318516525781367 0.006 0 0 1.832595714594046</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.0058 0.012</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_8">
+          <pose>-0.009999999999999997 0.017320508075688773 0.006 0 0 2.0943951023931953</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.0058 0.012</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.08 .3 .8 1</ambient>
+            <diffuse>.08 .3 .8 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_8">
+          <pose>-0.009999999999999997 0.017320508075688773 0.006 0 0 2.0943951023931953</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.0058 0.012</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_9">
+          <pose>-0.014142135623730949 0.014142135623730952 0.006 0 0 2.356194490192345</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.0058 0.012</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.08 .3 .8 1</ambient>
+            <diffuse>.08 .3 .8 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_9">
+          <pose>-0.014142135623730949 0.014142135623730952 0.006 0 0 2.356194490192345</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.0058 0.012</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_10">
+          <pose>-0.017320508075688773 0.009999999999999998 0.006 0 0 2.6179938779914944</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.0058 0.012</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.08 .3 .8 1</ambient>
+            <diffuse>.08 .3 .8 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_10">
+          <pose>-0.017320508075688773 0.009999999999999998 0.006 0 0 2.6179938779914944</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.0058 0.012</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_11">
+          <pose>-0.019318516525781364 0.005176380902050421 0.006 0 0 2.8797932657906435</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.0058 0.012</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.08 .3 .8 1</ambient>
+            <diffuse>.08 .3 .8 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_11">
+          <pose>-0.019318516525781364 0.005176380902050421 0.006 0 0 2.8797932657906435</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.0058 0.012</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_12">
+          <pose>-0.02 2.4492935982947064e-18 0.006 0 0 3.141592653589793</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.0058 0.012</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.08 .3 .8 1</ambient>
+            <diffuse>.08 .3 .8 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_12">
+          <pose>-0.02 2.4492935982947064e-18 0.006 0 0 3.141592653589793</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.0058 0.012</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_13">
+          <pose>-0.019318516525781367 -0.005176380902050416 0.006 0 0 3.4033920413889427</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.0058 0.012</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.08 .3 .8 1</ambient>
+            <diffuse>.08 .3 .8 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_13">
+          <pose>-0.019318516525781367 -0.005176380902050416 0.006 0 0 3.4033920413889427</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.0058 0.012</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_14">
+          <pose>-0.017320508075688777 -0.009999999999999995 0.006 0 0 3.665191429188092</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.0058 0.012</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.08 .3 .8 1</ambient>
+            <diffuse>.08 .3 .8 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_14">
+          <pose>-0.017320508075688777 -0.009999999999999995 0.006 0 0 3.665191429188092</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.0058 0.012</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_15">
+          <pose>-0.014142135623730958 -0.014142135623730942 0.006 0 0 3.926990816987241</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.0058 0.012</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.08 .3 .8 1</ambient>
+            <diffuse>.08 .3 .8 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_15">
+          <pose>-0.014142135623730958 -0.014142135623730942 0.006 0 0 3.926990816987241</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.0058 0.012</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_16">
+          <pose>-0.010000000000000009 -0.01732050807568877 0.006 0 0 4.1887902047863905</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.0058 0.012</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.08 .3 .8 1</ambient>
+            <diffuse>.08 .3 .8 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_16">
+          <pose>-0.010000000000000009 -0.01732050807568877 0.006 0 0 4.1887902047863905</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.0058 0.012</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_17">
+          <pose>-0.005176380902050413 -0.019318516525781367 0.006 0 0 4.4505895925855405</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.0058 0.012</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.08 .3 .8 1</ambient>
+            <diffuse>.08 .3 .8 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_17">
+          <pose>-0.005176380902050413 -0.019318516525781367 0.006 0 0 4.4505895925855405</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.0058 0.012</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_18">
+          <pose>-3.673940397442059e-18 -0.02 0.006 0 0 4.71238898038469</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.0058 0.012</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.08 .3 .8 1</ambient>
+            <diffuse>.08 .3 .8 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_18">
+          <pose>-3.673940397442059e-18 -0.02 0.006 0 0 4.71238898038469</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.0058 0.012</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_19">
+          <pose>0.005176380902050406 -0.019318516525781367 0.006 0 0 4.974188368183839</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.0058 0.012</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.08 .3 .8 1</ambient>
+            <diffuse>.08 .3 .8 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_19">
+          <pose>0.005176380902050406 -0.019318516525781367 0.006 0 0 4.974188368183839</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.0058 0.012</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_20">
+          <pose>0.010000000000000002 -0.017320508075688773 0.006 0 0 5.235987755982989</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.0058 0.012</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.08 .3 .8 1</ambient>
+            <diffuse>.08 .3 .8 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_20">
+          <pose>0.010000000000000002 -0.017320508075688773 0.006 0 0 5.235987755982989</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.0058 0.012</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_21">
+          <pose>0.014142135623730947 -0.014142135623730954 0.006 0 0 5.497787143782138</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.0058 0.012</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.08 .3 .8 1</ambient>
+            <diffuse>.08 .3 .8 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_21">
+          <pose>0.014142135623730947 -0.014142135623730954 0.006 0 0 5.497787143782138</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.0058 0.012</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_22">
+          <pose>0.01732050807568877 -0.010000000000000009 0.006 0 0 5.759586531581287</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.0058 0.012</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.08 .3 .8 1</ambient>
+            <diffuse>.08 .3 .8 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_22">
+          <pose>0.01732050807568877 -0.010000000000000009 0.006 0 0 5.759586531581287</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.0058 0.012</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rim_23">
+          <pose>0.019318516525781364 -0.005176380902050431 0.006 0 0 6.021385919380436</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.0058 0.012</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>.08 .3 .8 1</ambient>
+            <diffuse>.08 .3 .8 1</diffuse>
+          </material>
+        </visual>
+        <collision name="rim_23">
+          <pose>0.019318516525781364 -0.005176380902050431 0.006 0 0 6.021385919380436</pose>
+          <geometry>
+            <box>
+              <size>0.008 0.0058 0.012</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+  </world>
+</sdf>

@@ -1,0 +1,9 @@
+{
+  "coordinate_frame": "Gazebo world",
+  "top_height": 0.13,
+  "benches": [
+    {"id": "bench_south", "wall": "Wall_4", "pose": [2.434466, -1.77881, 0, 0, 0, 0], "objects": ["cup", "bottle", "book"]},
+    {"id": "bench_east", "wall": "Wall_6", "pose": [5.23003, 1.552894, 0, 0, 0, 1.5707963267948966], "objects": ["bowl", "laptop", "mouse"]},
+    {"id": "bench_north", "wall": "Wall_7", "pose": [4.47117, 3.22289, 0, 0, 0, 0], "objects": ["cup", "bowl", "vase"]}
+  ]
+}
