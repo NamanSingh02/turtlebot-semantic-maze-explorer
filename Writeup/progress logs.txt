@@ -1,16 +1,16 @@
 #The purpose of this Document:
 - This document serves as a log of what all I have done, tried, or implemented
 
-Assignment 1 preparation
+Part 1 preparation
 
-I reviewed the assignment page and identified the required evidence: ROS CLI screenshots and Gazebo/RViz2 screenshots showing the TurtleBot in the maze. I confirmed that my available EC2 instance runs Ubuntu 24.04 and that SSH works.
+I reviewed the reference material and identified the setup checks to document: ROS CLI screenshots and Gazebo/RViz2 screenshots showing the TurtleBot in the maze. I confirmed that my available EC2 instance runs Ubuntu 24.04 and that SSH works.
 
-I reviewed the repository README, Compose configuration, Dockerfile, entrypoint, maze launch file, ROS bridge configuration, and RViz configuration. I also located the course repository at github.com/pantelis/turtlebot-maze and checked the official Ubuntu, Docker, NVIDIA, and AWS DCV instructions.
+I reviewed the repository README, Compose configuration, Dockerfile, entrypoint, maze launch file, ROS bridge configuration, and RViz configuration. I also located the upstream repository at github.com/pantelis/turtlebot-maze and checked the official Ubuntu, Docker, NVIDIA, and AWS DCV instructions.
 
-I selected a preparation workflow using ROS 2 Jazzy in Docker and an Amazon DCV console desktop. I documented the broader assignment requirements and learning outcomes in Tasks.txt. The detailed execution sequence, commands, checkpoints, and shutdown procedure are in logs.txt.
+I selected a preparation workflow using ROS 2 Jazzy in Docker and an Amazon DCV console desktop. I documented the broader project goals and learning outcomes in Tasks.txt. The detailed execution sequence, commands, checkpoints, and shutdown procedure are in logs.txt.
 
 The repository inspection showed that demo-world sets NVIDIA environment variables without explicitly requesting a GPU. I included a proposed Compose override and separate host/container OpenGL checks in the plan. I have not applied or validated this override on EC2.
 
-No EC2 installation, image build, simulation launch, navigation test, or submission screenshot has been performed during this preparation. The command sequence is a plan based on source inspection and official documentation, not a record of a completed assignment run.
+No EC2 installation, image build, simulation launch, navigation test, or simulation screenshot has been performed during this preparation. The command sequence is a plan based on source inspection and official documentation, not a record of a completed project run.
 
 I drafted the challenges.txt entries in first-person past tense. The retrospective draft is based on setup scenarios, and no runtime errors or completed fixes have been verified yet.

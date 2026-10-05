@@ -1,33 +1,32 @@
 #The purpose of this Document:
-- This document notes what all needs to be done in each question/assignment.
+- This document notes what all needs to be done in each part of the project.
 - Why are these tasks important to learn? (practical/industry use/relevance)
 - Does it have any exceptions/challenges/special concepts?
 - What are the learning outcomes from this task? (including technologies as well)
 
-Assignment 1: Getting Started with ROS
-Assignment source: https://aegean.ai/aiml-common/assignments/main/robotics-spring-2026/assignment-1
+Part 1: Getting Started with ROS
 
-Assignment objective
+Project objective
 
-I need to establish a working ROS development environment and bring up a TurtleBot3 or TurtleBot4 in the required simulated maze. The assignment has two graded tasks, each worth 50 points.
+I plan to establish a working ROS development environment and bring up a TurtleBot3 or TurtleBot4 in the simulated maze. This part establishes the simulation environment for later perception and navigation work.
 
-Task 1: Setting up ROS — 50 points
+Subtask 1: Setting up ROS
 
-I need to:
+My goals are to:
 - Set up a working ROS environment on my system.
 - Become familiar with the ROS command-line interface and basic concepts such as nodes and topics.
-- Capture screenshots of ROS CLI commands as evidence of the setup.
+- Capture screenshots of ROS CLI commands to document the working setup.
 
 Why this matters
-A working ROS environment is the foundation for developing and integrating robot software. Understanding nodes and topics helps me inspect how robot programs communicate and diagnose problems in later assignments.
+A working ROS environment is the foundation for developing and integrating robot software. Understanding nodes and topics helps me inspect how robot programs communicate and diagnose problems in later parts of the project.
 
 Learning outcomes
 I should understand the role of ROS, recognize its basic communication concepts, and use its CLI to inspect a running robotics system.
 
-Task 2: Bringing up the TurtleBot in the maze — 50 points
+Subtask 2: Bringing up the TurtleBot in the maze
 
-I need to:
-- Use the course turtlebot-maze project to bring up a TurtleBot3 or TurtleBot4 in the required maze world.
+My goals are to:
+- Use the upstream turtlebot-maze repository to bring up a TurtleBot3 or TurtleBot4 in the maze world.
 - Display the robot and maze in Gazebo and RViz2.
 - Capture screenshots of both applications showing the robot in the maze.
 
@@ -39,8 +38,8 @@ I should understand the difference between simulation and ROS visualization, rec
 
 Relevant constraints and concepts
 
-The assignment recommends Docker-based development and the course repository. ROS distributions must match their supported Ubuntu versions when installed natively; my available Ubuntu 24.04 EC2 instance is suitable for a Jazzy-based setup. Remote graphical access is a practical requirement of my EC2 environment so I can view the required applications.
+I plan to use Docker-based development with the upstream repository. ROS distributions must match their supported Ubuntu versions when installed natively; my available Ubuntu 24.04 EC2 instance is suitable for a Jazzy-based setup. Remote graphical access is a practical requirement of my EC2 environment so I can view the required applications.
 
-The required submission consists of ROS CLI screenshots and Gazebo/RViz2 screenshots showing the TurtleBot in the maze. The assignment page does not specify AI model training, an exploration algorithm, or a navigation-performance benchmark. Any additional navigation demonstration is optional verification.
+I will document the working environment with ROS CLI screenshots and Gazebo/RViz2 screenshots showing the TurtleBot in the maze. This part focuses on environment setup and simulation. A navigation demonstration provides additional verification before later perception and exploration work.
 
 The detailed execution procedure and commands belong in logs.txt. Completed work belongs in progress logs.txt, and encountered technical problems belong in challenges.txt.

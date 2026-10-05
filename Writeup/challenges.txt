@@ -3,7 +3,7 @@
 - It notes: Brief context (what was happening, what did I do? and in which scenario?), description (why it was happening), and how I fixed it
 - lessons learnt during solving the task
 
-Assignment 1: Setup challenges
+Part 1: Setup challenges
 
 
 
