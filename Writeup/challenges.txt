@@ -3,152 +3,70 @@
 - It notes: Brief context (what was happening, what did I do? and in which scenario?), description (why it was happening), and how I fixed it
 - lessons learnt during solving the task
 
-Assignment 1: Possible execution challenges
+Assignment 1: Setup challenges
 
-These are anticipated problems I could face while setting up ROS and running the TurtleBot maze on EC2. They have not been observed during an EC2 run yet. Each entry describes the situation, possible symptoms and causes, the approach I would use to diagnose and resolve it, and the lesson involved. Once a problem occurs, I will record the actual cause, fix, and verification result in its entry.
 
-Task 1: Setting up the ROS environment
 
-1. Running a command in the wrong environment
+1. Gazebo and RViz2 failed to open
 
-Context: I am switching between my laptop terminal, the EC2 SSH shell, the DCV desktop terminal, and a shell inside the ROS container.
-Possible error: ros2 is not found on the host, Docker is not available inside the container, or a graphical application cannot connect to the display.
-Possible cause: The command is being run in an environment that does not contain the required software or desktop variables.
-Diagnosis and planned resolution: I would identify the current shell using hostname and pwd. Compose commands belong in the EC2 host project directory; ROS commands belong in the ROS container. I would launch graphical services from the DCV desktop terminal and check DISPLAY there.
-Verification: Compose recognizes the project on the host, and ROS commands work inside the container.
-Lesson: Knowing where a command runs is as important as knowing the command itself.
+Context: I launched demo-world from an SSH terminal on EC2.
+Error: The graphical applications failed to open because they could not access the desktop display.
+Cause: The SSH shell did not carry the active DCV desktop's display environment, and the container needed X11 access and authorization.
+How I fixed it: I launched the service from a terminal inside the DCV desktop, checked DISPLAY and XAUTHORITY, verified the authentication file, and granted access with xhost +SI:localuser:root.
+Lesson learnt: I learned that graphical containers needed access to the desktop session in addition to the application dependencies.
 
-2. Docker permission or daemon errors
+2. The Docker container could not access the GPU
 
-Context: I am testing Docker or building the simulation after installation.
-Possible error: Permission denied while connecting to the Docker socket, or cannot connect to the Docker daemon.
-Possible cause: My session has not acquired docker group membership, or the daemon is stopped. These are separate problems.
-Diagnosis and planned resolution: I would inspect id -nG and sudo systemctl status docker. For group membership, I would add my account using sudo usermod -aG docker "$USER" and fully log out and back in. For a stopped daemon, I would start it with sudo systemctl start docker.
-Verification: docker run --rm hello-world succeeds without sudo.
-Lesson: Installing Docker, starting its daemon, and granting access are separate setup requirements.
-Reference: https://docs.docker.com/engine/install/linux-postinstall/
+Context: The host recognized the T4 through nvidia-smi, but the container GPU check failed.
+Error: Docker could not provide GPU access to the container.
+Cause: The NVIDIA container runtime needed configuration, and the simulation service did not explicitly request a GPU. Setting NVIDIA environment variables alone was insufficient.
+How I fixed it: I configured the NVIDIA Container Toolkit for Docker, restarted Docker, and added the GPU reservation to the Compose override. I used docker run --rm --gpus all ubuntu:24.04 nvidia-smi to check container access.
+Lesson learnt: I learned that host GPU access and container GPU access required separate configuration.
 
-3. Missing Compose configuration or environment variables
+3. The simulation used software rendering
 
-Context: I am launching or building from the project folder.
-Possible error: Compose cannot find its configuration, reports that ROS_DISTRO is required, or rejects YAML syntax.
-Possible cause: I am in the wrong directory, .env is missing, or the override file has incorrect indentation.
-Diagnosis and planned resolution: I would check pwd, ls -a, and cat .env, then validate using docker compose config --quiet. I would inspect docker compose config to confirm that the override and GPU request are included. I would restore missing configuration from the intended checkout and correct the specific YAML error.
-Verification: Configuration validation succeeds and the merged demo-world service has the expected environment and GPU reservation.
-Lesson: Compose uses both configuration files and environment values; validation should happen before a long build.
+Context: Gazebo and RViz2 opened, but their updates were slow even though the T4 was available.
+Error: The OpenGL renderer used llvmpipe instead of NVIDIA, so rendering ran on the CPU.
+Cause: GPU compute access was available, but the container's graphics configuration did not select the NVIDIA rendering path.
+How I fixed it: I compared glxinfo -B on the desktop and inside demo-world, enabled the NVIDIA graphics capabilities and GLX vendor setting in the override, and recreated the service. I checked the renderer again inside the container.
+Lesson learnt: I learned that successful nvidia-smi output did not establish hardware-accelerated OpenGL rendering.
 
-4. Disk space or dependency download failures during the build
+4. Docker reported a socket permission error
 
-Context: I am installing the desktop or running docker compose build demo-world.
-Possible error: No space left on device, failed package downloads, DNS failures, or dependency compilation errors.
-Possible cause: Root EBS space is exhausted, network access is unavailable, or a dependency has changed. The instance's local SSD does not automatically provide space to Docker on the root filesystem.
-Diagnosis and planned resolution: I would inspect df -h / and docker system df, then read the first relevant build error. For insufficient space, I would expand EBS and its filesystem or remove only identified unused artifacts. For download failures, I would check network/DNS access and retry after correcting it. A package or compiler error would require inspecting the named dependency rather than treating it as a network problem.
-Verification: The build completes successfully and the image is available.
-Lesson: Resource, network, and source-build failures need different fixes; the last error line often hides the original cause.
+Context: I ran Docker commands after installation.
+Error: Docker reported permission denied while connecting to its socket.
+Cause: My current login session had not acquired docker group membership.
+How I fixed it: I checked id -nG, added my account to the docker group, and fully logged out and back in. I then checked access with docker run --rm hello-world.
+Lesson learnt: I learned that opening another terminal in the same desktop session did not necessarily apply new group membership.
 
-5. The NVIDIA driver does not recognize the T4
+5. ROS commands and project packages were not found
 
-Context: I am checking the GPU before configuring Docker or the remote desktop.
-Possible error: nvidia-smi is missing, reports no devices, or cannot communicate with the NVIDIA driver.
-Possible cause: The driver is absent, its kernel module did not load, or a reboot is needed after installation or an update.
-Diagnosis and planned resolution: I would inspect nvidia-smi, lspci, and lsmod for NVIDIA hardware and modules. If the driver is absent, I would use Ubuntu's driver installation procedure. If it is installed, I would inspect the driver/kernel error and reboot when appropriate instead of repeatedly reinstalling unrelated CUDA packages.
-Verification: Host nvidia-smi lists the T4 without errors.
-Lesson: The host driver must work before container GPU access can be diagnosed.
-Reference: https://ubuntu.com/server/docs/how-to/graphics/install-nvidia-drivers/
+Context: I tried running ROS commands on the host and then in a fresh container shell.
+Error: The host could not find ros2, and the container shell did not initially locate the project workspace.
+Cause: ROS was installed inside Docker, and the new shell needed the ROS and workspace environments to be sourced.
+How I fixed it: I entered demo-world and sourced /opt/ros/jazzy/setup.bash, /turtlebot_ws/install/setup.bash, and /overlay_ws/install/setup.bash. I checked the environment using ros2 --help and ros2 pkg prefix tb_worlds.
+Lesson learnt: I learned to distinguish the host from the ROS container and to load the installed workspace before inspecting its packages.
 
-6. The host GPU works but the container cannot use it
+6. The laser topic did not deliver messages to the CLI
 
-Context: Host nvidia-smi succeeds, but the container GPU test fails.
-Possible error: Docker cannot select a driver with GPU capabilities, or the container cannot initialize NVIDIA access.
-Possible cause: NVIDIA Container Toolkit is missing or not configured for Docker, or the simulation service does not request a GPU.
-Diagnosis and planned resolution: I would check the toolkit installation and Docker runtime configuration, then inspect the merged Compose service. I would configure the runtime using sudo nvidia-ctk runtime configure --runtime=docker, restart Docker, and ensure demo-world explicitly requests the GPU.
-Verification: docker run --rm --gpus all ubuntu:24.04 nvidia-smi succeeds. After service recreation, the simulation container also has GPU access.
-Lesson: NVIDIA environment variables alone do not establish container GPU access.
-References: https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html
-https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/troubleshooting.html
+Context: I inspected /scan while the maze simulation was running.
+Error: The topic appeared in ros2 topic list, but the echo command waited without displaying messages.
+Cause: The subscriber's reliability requirement was incompatible with the sensor publisher's best-effort QoS.
+How I fixed it: I checked that /clock was advancing and inspected the publisher using ros2 topic info /scan --verbose. I then used ros2 topic echo /scan --once --qos-reliability best_effort.
+Lesson learnt: I learned that topic discovery did not guarantee message delivery; the publisher and subscriber also needed compatible QoS.
 
-7. DCV is unreachable or authentication/session creation fails
+7. The robot and laser scan were misaligned in RViz2
 
-Context: I am opening the EC2 desktop through https://localhost:8443 on my laptop.
-Possible error: Connection refused, authentication failure, no available session, or a licensing error when creating a session.
-Possible cause: The SSH tunnel is closed or points to an old public IP; dcvserver is stopped; the Ubuntu password or session owner is incorrect; or the instance lacks access to the regional DCV licensing object.
-Diagnosis and planned resolution: I would check the tunnel, current EC2 IP, sudo systemctl status dcvserver, and sudo dcv list-sessions. I would verify the Ubuntu account password and console-session owner. For licensing errors, I would check the EC2 IAM role's regional S3 permission and outbound HTTPS access, using the server logs to identify the specific failure.
-Verification: I can authenticate and open the robotics desktop session through the SSH tunnel.
-Lesson: Network reachability, account authentication, session creation, and licensing are separate layers.
-References: https://docs.aws.amazon.com/dcv/latest/adminguide/troubleshooting.html
-https://docs.aws.amazon.com/dcv/latest/adminguide/setting-up-license.html
+Context: The robot appeared correctly in Gazebo, but the laser points did not line up with the maze walls in RViz2.
+Error: RViz2 displayed an incorrect estimated robot position relative to the map.
+Cause: The localization estimate did not match the robot's actual starting pose.
+How I fixed it: I checked the map fixed frame, the /map and /scan display topics, and the required transforms. I then used 2D Pose Estimate at the robot's actual map position and heading.
+Lesson learnt: I learned that the localization estimate and simulated physical pose were separate, and that setting the estimate did not teleport the robot.
 
-8. DCV connects but the desktop is black or graphics use the CPU
+8. The DCV connection stopped working after restarting EC2
 
-Context: The remote connection succeeds, but the desktop is blank or sluggish.
-Possible symptom: A black screen, a failed graphical login, or glxinfo -B reporting llvmpipe.
-Possible cause: GDM/Xorg is not running correctly, Wayland remains enabled, or the NVIDIA display configuration is not being used.
-Diagnosis and planned resolution: I would inspect sudo journalctl -u gdm3 -b --no-pager and the Xorg logs. I would verify WaylandEnable=false and the NVIDIA Xorg configuration. In a working desktop terminal, I would check XDG_SESSION_TYPE and glxinfo -B before changing the container configuration.
-Verification: The desktop opens, the session uses X11, and the OpenGL renderer identifies NVIDIA.
-Lesson: A connected remote desktop does not prove that hardware rendering is configured.
-Reference: https://docs.aws.amazon.com/dcv/latest/adminguide/setting-up-installing-linux-prereq.html
-
-Task 2: Bringing up the TurtleBot in the maze
-
-9. Gazebo or RViz2 cannot open a window
-
-Context: I am starting demo-world after building the image.
-Possible error: Cannot open display, an X11 authorization failure, a Qt display/plugin error, or a mount error involving .Xauthority.
-Possible cause: Compose was launched from an ordinary SSH shell without the desktop environment, DISPLAY points to the wrong session, the authentication file is missing/stale, or the X11 socket/authorization is inaccessible. A Qt plugin error can also come from missing libraries, so it needs the full error message.
-Diagnosis and planned resolution: I would run the launch from the DCV desktop terminal, inspect DISPLAY and XAUTHORITY, verify that the authentication path is a file, and check the Compose display mounts. I would apply xhost +SI:localuser:root for the intended container user. If a plugin still fails, I would inspect its library error rather than assuming authorization is the only cause.
-Verification: Both Gazebo and RViz2 open on the active desktop.
-Lesson: Graphical containers need a working display connection and authorization in addition to installed application packages.
-
-10. ROS commands or project packages are missing inside the container
-
-Context: I am inspecting the running simulation in a new container shell.
-Possible error: ros2: command not found, Package 'tb_worlds' not found, or a dependency package cannot be located.
-Possible cause: ROS/workspace setup files were not sourced, the build failed, or the wrong image is running. In the inspected repository, the Dockerfile builds /turtlebot_ws while the entrypoint explicitly checks /turtlebot3_ws; this discrepancy may matter if the overlay does not load the expected underlay.
-Diagnosis and planned resolution: I would check which setup files exist and explicitly source /opt/ros/jazzy/setup.bash, /turtlebot_ws/install/setup.bash, and /overlay_ws/install/setup.bash. If a file or package is absent, I would inspect the build result and image rather than repeatedly sourcing a nonexistent path.
-Verification: ros2 --help and ros2 pkg prefix tb_worlds succeed, and the required launch packages are discoverable.
-Lesson: Installed files become available to ROS through the shell's environment; source paths must match the actual image.
-
-11. The maze or robot is missing, or simulation time is frozen
-
-Context: Gazebo opens, but the required scene does not run correctly.
-Possible symptom: An empty/default world, unresolved models, a missing robot, or /clock values that do not advance.
-Possible cause: The wrong world service is running, a world/model resource path is unresolved, the robot spawner failed, the server stopped, or playback is paused.
-Diagnosis and planned resolution: I would inspect docker compose ps and docker compose logs --tail=150 demo-world, confirm the intended maze launch, and read resource/spawn errors. For missing resources, I would check the installed model files and Gazebo resource paths for the active world. For frozen time, I would check the server and playback button before investigating ROS transport. I would also check for another running world service.
-Verification: The required maze and robot are visible, the robot is on the floor, and repeated /clock reads advance.
-Lesson: A visible Gazebo window does not prove the world loaded successfully or that its physics server is running.
-
-12. ROS topics are missing or sensor messages do not arrive
-
-Context: The simulation is running, but ros2 topic list or sensor echo commands do not show expected data.
-Possible symptom: No /scan topic, a topic with no publisher, or an echo command waiting indefinitely.
-Possible cause: The sensor or Gazebo-to-ROS bridge failed, playback is paused, ROS_DOMAIN_ID or middleware settings differ between shells, or publisher/subscriber QoS is incompatible.
-Diagnosis and planned resolution: I would first confirm advancing /clock, then inspect ros2 topic info /scan --verbose and the bridge logs. I would compare ROS_DOMAIN_ID and RMW_IMPLEMENTATION across participating environments. If a publisher exists, I would compare its QoS and try ros2 topic echo /scan --once --qos-reliability best_effort. A QoS change will not fix a missing publisher.
-Verification: A laser message arrives and ros2 topic hz /scan reports a nonzero rate.
-Lesson: Discovery, publisher availability, and compatible message delivery are distinct checks. A reliable subscriber cannot receive from a best-effort publisher when their reliability requirements are incompatible.
-Reference: https://raw.githubusercontent.com/ros2/ros2_documentation/jazzy/source/Concepts/Intermediate/About-Quality-of-Service-Settings.rst
-
-13. RViz2 opens but the map, robot, or laser scan is incorrect
-
-Context: Gazebo looks correct, but the RViz visualization is incomplete or misaligned.
-Possible symptom: No map, TF errors, a robot at the wrong location, or scan points that do not match walls.
-Possible cause: The fixed frame or display topic is wrong, a required transform is missing, simulated-time settings differ, or the localization estimate does not match the physical pose. Map QoS can also prevent a late subscriber from receiving the stored map.
-Diagnosis and planned resolution: I would use map as the fixed frame and inspect /map, /scan, /tf, and /tf_static. I would check RViz display status messages and simulated-time settings. For map delivery, I would match the publisher's QoS, including transient-local durability when needed. If the required data and transforms exist but localization is wrong, I would set 2D Pose Estimate to the robot's actual map position and heading.
-Verification: The map and robot are visible and the laser points broadly align with the nearby walls.
-Lesson: Correct sensor data, coordinate transforms, and localization are all necessary for a consistent visualization.
-
-14. The simulation renders slowly despite available GPU memory
-
-Context: Gazebo and RViz2 run, but updates lag and Gazebo's real-time factor stays low.
-Possible cause: Container OpenGL uses software rendering, CPU-heavy physics or sensors limit throughput, optional displays consume resources, or network latency slows the remote desktop. GPU memory availability alone cannot identify the bottleneck.
-Diagnosis and planned resolution: I would compare host and container glxinfo -B, inspect nvidia-smi, docker stats, and top, and observe whether simulated time or only desktop display updates are slow. I would correct graphics access if needed, stop unrelated services, avoid simultaneous builds, and reduce unnecessary RViz displays or desktop resolution.
-Verification: The renderer is appropriate and simulation/display responsiveness improves under the simplified workload.
-Lesson: Physics, rendering, and remote streaming have different performance limits.
-
-15. Optional navigation does not start or reach the goal
-
-Context: The required maze setup works and I am trying an additional RViz navigation goal.
-Possible symptom: /navigate_to_pose is absent, the goal is rejected, no path is produced, or the robot remains stationary.
-Possible cause: Nav2 has not become active, localization is incorrect, the goal is inside an obstacle or disconnected free space, or the controller/velocity bridge is not working. The inspected bridge expects geometry_msgs/msg/TwistStamped on /cmd_vel, so a manually published Twist would not match it.
-Diagnosis and planned resolution: I would inspect ros2 action list, Nav2 startup logs and lifecycle state, then verify localization and choose a nearby reachable goal. If a path exists but movement fails, I would inspect /cmd_vel publisher/type information and bridge logs while confirming playback is active.
-Verification: The robot moves toward a reachable goal and its pose updates in both applications.
-Lesson: Planning a path, publishing compatible velocity commands, and executing motion are separate stages. Navigation is optional evidence for this assignment.
+Context: I tried reopening the remote desktop after stopping and starting the instance.
+Error: The desktop connection failed through the previous SSH tunnel.
+Cause: The tunnel had closed, and the instance's public IP had changed.
+How I fixed it: I checked the current public IP in AWS, re-established the SSH tunnel, and checked dcvserver and the available session before reconnecting through the browser.
+Lesson learnt: I learned to recheck the instance address and tunnel after an EC2 restart instead of reusing the previous connection details.

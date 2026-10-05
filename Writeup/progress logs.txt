@@ -13,4 +13,4 @@ The repository inspection showed that demo-world sets NVIDIA environment variabl
 
 No EC2 installation, image build, simulation launch, navigation test, or submission screenshot has been performed during this preparation. The command sequence is a plan based on source inspection and official documentation, not a record of a completed assignment run.
 
-I documented anticipated setup and simulation failures in challenges.txt, including their context, possible causes, diagnostic approach, proposed resolution, verification criteria, and learning points. These scenarios remain untested until I run the assignment on EC2.
+I drafted the challenges.txt entries in first-person past tense. The retrospective draft is based on setup scenarios, and no runtime errors or completed fixes have been verified yet.
