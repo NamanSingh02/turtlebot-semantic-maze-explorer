@@ -1,6 +1,6 @@
 # Agent Instructions
 
-The writeup files need to be maintained continuously. If anything changes, these files must be kept up to date.
+The writeup files need to be maintained continuously. If anything changes, these files must be updated. dates should not be mentioned in any writeup file
 
 Also content should be written in its appropriate writeup file as mentioned in the section "#The purpose of this Document: " of that writeup file
 
