@@ -71,12 +71,60 @@ Cause: The tunnel had closed, and the instance's public IP had changed.
 How I fixed it: I checked the current public IP in AWS, re-established the SSH tunnel, and checked dcvserver and the available session before reconnecting through the browser.
 Lesson learnt: I learned to recheck the instance address and tunnel after an EC2 restart instead of reusing the previous connection details.
 
-Part 2: Implementation challenges
+Part 2: Object detection and event-storage challenges
 
-1. The local Docker daemon was unavailable
+1. Compose stopped because the database password was missing
 
-Context: I tried to use Docker while preparing database and runtime verification.
-Error: Docker could not connect to its Unix socket because the daemon was not running. Starting the application did not produce an available daemon during the checks.
-Cause: The local Docker runtime was unavailable, independently of the Compose configuration.
-How I fixed it: I installed PostgreSQL locally and started a separate temporary database for transaction tests. I validated Compose without the daemon. I did not complete a Docker image build or a ROS simulation run.
-Lesson learnt: I learned that checking configuration and testing database behavior could proceed independently of the container runtime, but neither established that the complete simulation worked.
+Context: I started the Part 2 services from a new terminal on EC2.
+Error: Compose reported that EVENT_DB_PASSWORD was required and did not start the stack.
+Cause: The password had been exported in another shell and was absent from the current terminal environment.
+How I fixed it: I entered and exported EVENT_DB_PASSWORD in the same terminal, checked the configuration with docker compose -f compose.events.yaml config --quiet, and restarted the services.
+Lesson learnt: I learned that exported environment variables belonged to the current shell and were not automatically available in a new terminal.
+
+2. PostgreSQL rejected the ingest worker's password
+
+Context: I restarted the stack using an existing PostgreSQL volume after entering a different password.
+Error: The ingest worker logged a password-authentication failure and did not store events.
+Cause: The existing database retained its original password. Changing POSTGRES_PASSWORD in the container environment did not update the database account in the persistent volume.
+How I fixed it: I restored the original password in EVENT_DB_PASSWORD and recreated the ingest service with the corrected connection settings. I retained the database volume and replayed the saved events after restoring access.
+Lesson learnt: I learned that database initialization settings applied to a fresh volume, while an existing volume preserved its account credentials and records.
+
+3. The detector dropped images without aligned odometry
+
+Context: I started detection before checking that the simulation clock and odometry stream were advancing.
+Error: The detector logged “Dropping image without timestamp-aligned odometry” and produced no stored frame events for those images.
+Cause: The detector did not have odometry samples at, or closely bracketing, the image timestamp. Seeing the topic name alone did not establish that usable state data was arriving.
+How I fixed it: I checked /clock and /odom inside the world container, resumed the paused simulation, and waited for live odometry before restarting detection. I checked that the world and detector used the same ROS_DOMAIN_ID.
+Lesson learnt: I learned that detection events needed synchronized sensor and state data; substituting the latest available pose would have hidden the timing error.
+
+4. Events contained an unavailable camera transform
+
+Context: I inspected stored events after camera images and odometry started arriving.
+Error: The events contained tf_ok=false and a null t_base_camera matrix.
+Cause: The image's camera frame was not connected to the configured base frame in the available TF tree at the image timestamp.
+How I fixed it: I checked the image header frame, the configured base frame, and the robot's TF publishers. I retained tf_ok=false and the null matrix for frames without a valid transform rather than replacing the camera frame with an unrelated frame or inserting an identity matrix.
+Lesson learnt: I learned that receiving camera images did not establish a valid base-to-camera transform, and that unavailable transform data needed to remain explicit.
+
+5. Stored frame counts were lower than the saved event count
+
+Context: I compared the detector's local event spool with the database report after interrupting the messaging services.
+Error: The report contained fewer frames than the detector had saved locally.
+Cause: Live publications during the interruption did not reach the ingest worker. The detector's local spool preserved the original events, but publication alone did not confirm database storage.
+How I fixed it: I restored the router and ingest services, replayed the run's metadata file and event spool, and regenerated the report. I replayed the same spool again to check that identical events did not increase the stored counts.
+Lesson learnt: I learned that durable local records and idempotent replay were necessary for recovering observations after messaging interruptions.
+
+6. Visible bench objects produced few detections
+
+Context: I approached the benches while inspecting the robot's camera view and detector output.
+Error: Objects visible in Gazebo produced empty detection lists or weak class predictions in the camera stream.
+Cause: The objects occupied few pixels in the 320 × 240 image, and the procedural geometry differed from the photographic objects used to train the pretrained detector.
+How I fixed it: I moved closer through clear space, faced the camera toward the bench, and inspected the actual camera view before changing detection settings. I treated weak recognition of the procedural models as an asset-quality limitation rather than a database or Zenoh failure.
+Lesson learnt: I learned that choosing a COCO class name for an asset did not make its rendered appearance recognizable to a pretrained model.
+
+7. Inference slowed the perception pipeline
+
+Context: I ran Gazebo, RViz2 and YOLO together on the EC2 T4.
+Error: Detection updates lagged while the simulation and visualization competed for resources.
+Cause: Rendering and model inference shared the GPU, and processing more camera frames increased the workload.
+How I fixed it: I kept the lightweight YOLOv8n model, reduced the detector's maximum processing rate, and disabled unnecessary RViz displays. I checked GPU utilization and simulation responsiveness before raising the processing rate again.
+Lesson learnt: I learned that a higher inference rate did not automatically produce a better robotics pipeline when it reduced simulation responsiveness.
